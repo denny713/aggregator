@@ -80,6 +80,7 @@ section {
 footer {
     padding: 1rem;
     text-align: center;
+    background-color: #bfbfbf;
 }
 
 fieldset {
@@ -193,7 +194,7 @@ legend {
     }
 
     .header {
-        background-color: #f6f6f6 !important;
+        background-color: #bfbfbf !important;
     }
 
     #navbarSupportedContent {
@@ -227,7 +228,7 @@ legend {
 
 .navbar-head {
     --bs-bg-opacity: 1;
-    background-color: #f6f6f6 !important;
+    background-color: #bfbfbf !important;
 }
 
 .content {

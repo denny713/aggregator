@@ -32,3 +32,11 @@ function doUpload() {
         showNotice('success', "Upload Berhasil", "File berhasil diupload.", null);
     }
 }
+
+function doProcess() {
+    alert("Proses");
+}
+
+function hideAllContents() {
+    document.getElementById("csv-upload").style.display = 'none';
+}

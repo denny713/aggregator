@@ -45,11 +45,12 @@
                             </span>
                         </a>
                         <ul class="dropdown-content">
-                            <li><a href="#"><i class="fab fa-facebook"></i>&nbsp;Facebook</a></li>
-                            <li><a href="#"><i class="fab fa-instagram"></i>&nbsp;Instagram</a></li>
-                            <li><a href="#"><i class="fab fa-youtube"></i>&nbsp;Youtube</a></li>
-                            <li><a href="#"><i class="fab fa-twitter"></i>&nbsp;X&nbsp;/&nbsp;Twitter</a></li>
-                            <li><a href="#"><i class="fab fa-tiktok"></i>&nbsp;TikTok</a></li>
+                            <li><a href="javascript:void(0)"><i class="fab fa-facebook"></i>&nbsp;Facebook</a></li>
+                            <li><a href="javascript:void(0)"><i class="fab fa-instagram"></i>&nbsp;Instagram</a></li>
+                            <li><a href="javascript:void(0)"><i class="fab fa-youtube"></i>&nbsp;Youtube</a></li>
+                            <li><a href="javascript:void(0)"><i
+                                    class="fab fa-twitter"></i>&nbsp;X&nbsp;/&nbsp;Twitter</a></li>
+                            <li><a href="javascript:void(0)"><i class="fab fa-tiktok"></i>&nbsp;TikTok</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -59,7 +60,8 @@
                     </span>
                         </a>
                         <ul class="dropdown-content">
-                            <li><a href="#"><i class="fab fa-stack-overflow"></i>&nbsp;Stack&nbsp;Overflow</a></li>
+                            <li><a href="javascript:void(0)"><i class="fab fa-stack-overflow"></i>&nbsp;Stack&nbsp;Overflow</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -69,8 +71,9 @@
                     </span>
                         </a>
                         <ul class="dropdown-content">
-                            <li><a href="#"><i class="fab fa-google-play"></i>&nbsp;Play&nbsp;Store</a></li>
-                            <li><a href="#"><i class="fab fa-apple"></i>&nbsp;App&nbsp;Store</a></li>
+                            <li><a href="javascript:void(0)"><i class="fab fa-google-play"></i>&nbsp;Play&nbsp;Store</a>
+                            </li>
+                            <li><a href="javascript:void(0)"><i class="fab fa-apple"></i>&nbsp;App&nbsp;Store</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -80,10 +83,11 @@
                     </span>
                         </a>
                         <ul class="dropdown-content">
-                            <li><a href="#"><i class="fas fa-book"></i>&nbsp;IEEE</a></li>
-                            <li><a href="#"><i class="fas fa-book"></i>&nbsp;ACM</a></li>
-                            <li><a href="#"><i class="fas fa-book"></i>&nbsp;Springer</a></li>
-                            <li><a href="#"><i class="fas fa-book"></i>&nbsp;Google&nbsp;Scholar</a></li>
+                            <li><a href="javascript:void(0)"><i class="fas fa-book"></i>&nbsp;IEEE</a></li>
+                            <li><a href="javascript:void(0)"><i class="fas fa-book"></i>&nbsp;ACM</a></li>
+                            <li><a href="javascript:void(0)"><i class="fas fa-book"></i>&nbsp;Springer</a></li>
+                            <li><a href="javascript:void(0)"><i class="fas fa-book"></i>&nbsp;Google&nbsp;Scholar</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -93,9 +97,9 @@
                     </span>
                         </a>
                         <ul class="dropdown-content">
-                            <li><a href="#"><i class="fas fa-store"></i>&nbsp;Tokopedia</a></li>
-                            <li><a href="#"><i class="fas fa-store"></i>&nbsp;Shopee</a></li>
-                            <li><a href="#"><i class="fas fa-store"></i>&nbsp;Bukalapak</a></li>
+                            <li><a href="javascript:void(0)"><i class="fas fa-store"></i>&nbsp;Tokopedia</a></li>
+                            <li><a href="javascript:void(0)"><i class="fas fa-store"></i>&nbsp;Shopee</a></li>
+                            <li><a href="javascript:void(0)"><i class="fas fa-store"></i>&nbsp;Bukalapak</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -105,7 +109,7 @@
                     </span>
                         </a>
                         <ul class="dropdown-content">
-                            <li><a href="#"><i class="fas fa-newspaper"></i>&nbsp;Detik.com</a></li>
+                            <li><a href="javascript:void(0)"><i class="fas fa-newspaper"></i>&nbsp;Detik.com</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -116,19 +120,49 @@
             <form>
                 <div class="row form-group">
                     <div class="col">
-                        <fieldset>
-                            <legend>Upload CSV File</legend>
-                            <div class="row" style="margin: auto;">
-                                <div class="w-100"></div>
-                                <div class="col-2">
-                                    <input type="file" id="csv" name="csv">
-                                </div>
-                                <div class="col-3">
-                                    <input class="btn btn-primary btn-sm text-center" type="Button" onclick="doUpload()"
-                                           value="Upload">
-                                </div>
+                        <h1>Text-Preprocessing</h1>
+                        <p>Text preprocessing adalah suatu proses untuk menyeleksi data text agar menjadi lebih
+                            terstruktur lagi dengan melalui serangkaian tahapan.</p>
+                        <p>Aplikasi ini berguna untuk memproses teks yang formatnya tidak terstruktur dan mengubahnya
+                            menjadi data yang siap diproses oleh komputer.</p>
+                        <br>
+                        <p>Upload file dalam bentuk CSV atau pilih dari menu yang ada pada sidebar.</p>
+                        <br>
+                        <div class="row form-group">
+                            <div class="col" id="csv-upload">
+                                <fieldset>
+                                    <legend>Upload File CSV</legend>
+                                    <div class="row" style="margin: auto;">
+                                        <div class="w-100"></div>
+                                        <div class="col-6">
+                                            <input type="file" id="csv" name="csv">
+                                        </div>
+                                        <div class="col-4">
+                                            <input class="btn btn-primary btn-sm text-center" type="button"
+                                                   onclick="doUpload()" value="Upload">
+                                        </div>
+                                    </div>
+                                </fieldset>
                             </div>
-                        </fieldset>
+                            <div class="col" id="process-csv">
+                                <fieldset>
+                                    <legend>Nama Kolom Yang Akan Diproses</legend>
+                                    <div class="row" style="margin: auto;">
+                                        <div class="w-100"></div>
+                                        <div class="col-sm-2">
+                                            <label class="display-label" for="process">Role</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <select id="process" name="process" class="form-select"></select>
+                                        </div>
+                                        <div class="col-4">
+                                            <input class="btn btn-primary btn-sm text-center" type="button"
+                                                   onclick="doProcess()" value="Submit">
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
