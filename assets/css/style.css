@@ -1,0 +1,141 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+fieldset {
+    border: 1px solid #333333;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+legend {
+    font-family: Poppins-Regular, sans-serif;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+    margin-bottom: 0;
+    width: auto;
+    padding: 0 10px;
+    border: 1px solid #333333;
+    float: none;
+    color: #333333;
+}
+
+.navbar {
+    background-color: #34495e;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.navbar-head {
+    background-color: #f6f6f6;
+}
+
+.main-container {
+    display: flex;
+    flex-grow: 1;
+    min-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
+.sidebar {
+    background-color: #d9d9d9;
+    padding: 1rem;
+    width: 300px;
+    color: #333333;
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+    color: #333333;
+    text-decoration: none;
+    font-weight: 500;
+    display: block;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+.dropdown .icon {
+    float: right;
+}
+
+.dropdown-content {
+    display: none;
+    padding-left: 20px;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+}
+
+.dropdown-content.show {
+    max-height: 500px;
+    transition: max-height 0.4s ease-in;
+}
+
+.dropdown-content li {
+    margin-bottom: 10px;
+}
+
+.dropdown-content li a {
+    font-size: 0.9rem;
+    color: #333333;
+}
+
+.dropdown-content li a:hover {
+    color: white;
+}
+
+.content {
+    flex: 1;
+    padding: 2rem;
+    background-color: #ffffff;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.footer {
+    background-color: #f6f6f6;
+    color: #333333;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer p {
+    font-size: 0.9rem;
+}
