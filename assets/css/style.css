@@ -80,7 +80,6 @@ section {
 footer {
     padding: 1rem;
     text-align: center;
-    background-color: #bfbfbf;
 }
 
 fieldset {
@@ -307,4 +306,21 @@ legend {
 
 .modal-header-colour {
     background-color: #0d890d;
+}
+
+table.dataTable thead tr th {
+    background-color: #0d890d;
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+table.dataTable tbody td {
+    background-color: white;
+    max-width: 580px;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+div.dt-length {
+    display: none;
 }

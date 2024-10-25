@@ -51,11 +51,19 @@ function get(url, type, request) {
     return data;
 }
 
+function getValueFromIndex(data, index) {
+    if (index > 0 && index <= data.length) {
+        return data[index - 1];
+    } else {
+        return null;
+    }
+}
+
 function appendOptions(select, data, param) {
     select.innerHTML = "";
-    data.forEach((value) => {
+    data.forEach((value, index) => {
         let option = document.createElement("option");
-        option.value = value;
+        option.value = index + 1;
         option.innerHTML = value;
         if (param && (param === value)) {
             option.setAttribute("selected", "selected");
@@ -76,12 +84,12 @@ function readCsv() {
 
         let reader = new FileReader();
 
-        reader.onload = function(event) {
+        reader.onload = function (event) {
             let csvData = event.target.result;
             resolve(processCsv(csvData));
         };
 
-        reader.onerror = function(event) {
+        reader.onerror = function (event) {
             reject("Error membaca file: " + event.target.error.message);
         };
 
@@ -107,4 +115,42 @@ function hideLoading() {
 
 function showLoading() {
     $("#loading").modal("show");
+}
+
+function toggleSidebar() {
+    let sidebar = document.getElementById('sidebar-container');
+    let menuIcon = document.getElementById('menu-icon');
+
+    if (sidebar.classList.contains('show')) {
+        sidebar.classList.remove('show');
+        sidebar.classList.add('d-none');
+        menuIcon.classList.remove('fa-times');
+        menuIcon.classList.add('fa-bars');
+    } else {
+        sidebar.classList.remove('d-none');
+        sidebar.classList.add('show');
+        menuIcon.classList.remove('fa-bars');
+        menuIcon.classList.add('fa-times');
+    }
+}
+
+function adjustSidebar() {
+    let sidebarContainer = document.getElementById('sidebar-container');
+    let hamburgerIcon = document.getElementById('hamburger-icon');
+    let sidebarItem = document.getElementById("sidebar-item");
+    let menuIcon = document.getElementById('menu-icon');
+    menuIcon.classList.remove('fa-times');
+    menuIcon.classList.add('fa-bars');
+
+    if (window.innerWidth >= 1850) {
+        sidebarContainer.classList.add('show');
+        sidebarContainer.classList.remove('d-none');
+        hamburgerIcon.style.display = 'none';
+        sidebarItem.style.top = '75px';
+    } else {
+        sidebarContainer.classList.remove('show');
+        sidebarContainer.classList.add('d-none');
+        hamburgerIcon.style.display = 'block';
+        sidebarItem.style.top = '0px';
+    }
 }

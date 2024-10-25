@@ -1,5 +1,4 @@
-import pandas as pd
-from flask import Flask, render_template, flash, request
+from flask import Flask, render_template
 
 app = Flask(__name__, static_folder='assets', template_folder='pages')
 app.debug = True
