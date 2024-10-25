@@ -1,4 +1,4 @@
-function showNotice(type, title, message, callback) {
+function showMsg(type, title, message, callback) {
     Swal.fire({
         title: title,
         html: message,
@@ -14,29 +14,97 @@ function showNotice(type, title, message, callback) {
     });
 }
 
-function doUpload() {
-    let fileInput = document.getElementById('csv');
-    let file = fileInput.files[0];
+function get(url, type, request) {
+    let data = {};
 
-    if (!file) {
-        showNotice('error', "Error", "Tidak ada file yang diupload.", null);
-        return;
-    }
+    $.ajax({
+        url: url,
+        type: type,
+        async: false,
+        dataType: 'json',
+        data: JSON.stringify(request),
+        contentType: 'application/json; charset=utf-8',
+        cache: false,
+        timeout: 600000,
+        beforeSend: function () {
+            showLoading();
+        }
+    }).done(function (response) {
+        hideLoading();
+        data = response;
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        hideLoading();
+        try {
+            let response = JSON.parse(jqXHR.responseText);
+            if (response.data && response.data.error) {
+                let errorMessage = response.data.error;
+                showNotice('error', "Error", errorMessage);
+            } else {
+                showNotice('error', "Error", textStatus + " : " + errorThrown);
+            }
+        } catch (e) {
+            showNotice('error', "Error", textStatus + " : " + errorThrown);
+        }
+        data = null;
+    });
 
-    let fileName = file.name;
-    let fileExtension = fileName.split('.').pop().toLowerCase();
-
-    if (fileExtension !== 'csv') {
-        showNotice('error', "File Error", "File yang diupload harus berformat .csv.", null);
-    } else {
-        showNotice('success', "Upload Berhasil", "File berhasil diupload.", null);
-    }
+    return data;
 }
 
-function doProcess() {
-    alert("Proses");
+function appendOptions(select, data, param) {
+    select.innerHTML = "";
+    data.forEach((value) => {
+        let option = document.createElement("option");
+        option.value = value;
+        option.innerHTML = value;
+        if (param && (param === value)) {
+            option.setAttribute("selected", "selected");
+        }
+        select.appendChild(option);
+    });
 }
 
-function hideAllContents() {
-    document.getElementById("csv-upload").style.display = 'none';
+function readCsv() {
+    return new Promise((resolve, reject) => {
+        let fileInput = document.getElementById('csv');
+        let file = fileInput.files[0];
+
+        if (!file) {
+            reject("Tidak ada file yang dipilih.");
+            return;
+        }
+
+        let reader = new FileReader();
+
+        reader.onload = function(event) {
+            let csvData = event.target.result;
+            resolve(processCsv(csvData));
+        };
+
+        reader.onerror = function(event) {
+            reject("Error membaca file: " + event.target.error.message);
+        };
+
+        reader.readAsText(file);
+    });
+}
+
+function processCsv(csvData) {
+    let rows = csvData.split("\n");
+    let result = [];
+
+    for (const element of rows) {
+        let row = element.split(",");
+        result.push(row);
+    }
+
+    return result;
+}
+
+function hideLoading() {
+    $("#loading").modal("hide");
+}
+
+function showLoading() {
+    $("#loading").modal("show");
 }

@@ -299,3 +299,12 @@ legend {
 .dropdown .icon {
     margin-left: auto;
 }
+
+.btn-sidebar {
+    font-weight: bold;
+    color: #333333;
+}
+
+.modal-header-colour {
+    background-color: #0d890d;
+}

@@ -16,6 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.4/sweetalert2.all.min.js"></script>
+    <script src="../assets/js/process.js"></script>
     <script src="../assets/js/util.js"></script>
 </head>
 <body>
@@ -45,12 +46,31 @@
                             </span>
                         </a>
                         <ul class="dropdown-content">
-                            <li><a href="javascript:void(0)"><i class="fab fa-facebook"></i>&nbsp;Facebook</a></li>
-                            <li><a href="javascript:void(0)"><i class="fab fa-instagram"></i>&nbsp;Instagram</a></li>
-                            <li><a href="javascript:void(0)"><i class="fab fa-youtube"></i>&nbsp;Youtube</a></li>
-                            <li><a href="javascript:void(0)"><i
-                                    class="fab fa-twitter"></i>&nbsp;X&nbsp;/&nbsp;Twitter</a></li>
-                            <li><a href="javascript:void(0)"><i class="fab fa-tiktok"></i>&nbsp;TikTok</a></li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('facebook')">
+                                    <i class="fab fa-facebook"></i>&nbsp;Facebook
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('instagram')">
+                                    <i class="fab fa-instagram"></i>&nbsp;Instagram
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('youtube')">
+                                    <i class="fab fa-youtube"></i>&nbsp;Youtube
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('twitter')">
+                                    <i class="fab fa-twitter"></i>&nbsp;X&nbsp;/&nbsp;Twitter
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('tiktok')">
+                                    <i class="fab fa-tiktok"></i>&nbsp;TikTok
+                                </button>
+                            </li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -60,7 +80,10 @@
                     </span>
                         </a>
                         <ul class="dropdown-content">
-                            <li><a href="javascript:void(0)"><i class="fab fa-stack-overflow"></i>&nbsp;Stack&nbsp;Overflow</a>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('stackoverflow')">
+                                    <i class="fab fa-stack-overflow"></i>&nbsp;Stack&nbsp;Overflow
+                                </button>
                             </li>
                         </ul>
                     </li>
@@ -71,9 +94,16 @@
                     </span>
                         </a>
                         <ul class="dropdown-content">
-                            <li><a href="javascript:void(0)"><i class="fab fa-google-play"></i>&nbsp;Play&nbsp;Store</a>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('playstore')">
+                                    <i class="fab fa-google-play"></i>&nbsp;Play&nbsp;Store
+                                </button>
                             </li>
-                            <li><a href="javascript:void(0)"><i class="fab fa-apple"></i>&nbsp;App&nbsp;Store</a></li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('appstore')">
+                                    <i class="fab fa-apple"></i>&nbsp;App&nbsp;Store
+                                </button>
+                            </li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -83,10 +113,25 @@
                     </span>
                         </a>
                         <ul class="dropdown-content">
-                            <li><a href="javascript:void(0)"><i class="fas fa-book"></i>&nbsp;IEEE</a></li>
-                            <li><a href="javascript:void(0)"><i class="fas fa-book"></i>&nbsp;ACM</a></li>
-                            <li><a href="javascript:void(0)"><i class="fas fa-book"></i>&nbsp;Springer</a></li>
-                            <li><a href="javascript:void(0)"><i class="fas fa-book"></i>&nbsp;Google&nbsp;Scholar</a>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('ieee')">
+                                    <i class="fas fa-book"></i>&nbsp;IEEE
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('acm')">
+                                    <i class="fas fa-book"></i>&nbsp;ACM
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('springer')">
+                                    <i class="fas fa-book"></i>&nbsp;Springer
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('scholar')">
+                                    <i class="fas fa-book"></i>&nbsp;Google&nbsp;Scholar
+                                </button>
                             </li>
                         </ul>
                     </li>
@@ -97,9 +142,21 @@
                     </span>
                         </a>
                         <ul class="dropdown-content">
-                            <li><a href="javascript:void(0)"><i class="fas fa-store"></i>&nbsp;Tokopedia</a></li>
-                            <li><a href="javascript:void(0)"><i class="fas fa-store"></i>&nbsp;Shopee</a></li>
-                            <li><a href="javascript:void(0)"><i class="fas fa-store"></i>&nbsp;Bukalapak</a></li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('tokopedia')">
+                                    <i class="fas fa-store"></i>&nbsp;Tokopedia
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('shopee')">
+                                    <i class="fas fa-store"></i>&nbsp;Shopee
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('bukalapak')">
+                                    <i class="fas fa-store"></i>&nbsp;Bukalapak
+                                </button>
+                            </li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -109,7 +166,11 @@
                     </span>
                         </a>
                         <ul class="dropdown-content">
-                            <li><a href="javascript:void(0)"><i class="fas fa-newspaper"></i>&nbsp;Detik.com</a></li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="extScrape('detik')">
+                                    <i class="fas fa-newspaper"></i>&nbsp;Detik.com
+                                </button>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -129,6 +190,24 @@
                         <p>Upload file dalam bentuk CSV atau pilih dari menu yang ada pada sidebar.</p>
                         <br>
                         <div class="row form-group">
+                            <div class="col" id="search-keyword">
+                                <fieldset>
+                                    <legend>Input Keyword atau URL</legend>
+                                    <div class="row" style="margin: auto;">
+                                        <div class="w-100"></div>
+                                        <div class="col-sm-2">
+                                            <label class="display-label" for="search">Keyword</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" id="search" name="search">
+                                        </div>
+                                        <div class="col-4">
+                                            <input class="btn btn-primary btn-sm text-center" type="button"
+                                                   onclick="doSearch()" value="Search">
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
                             <div class="col" id="csv-upload">
                                 <fieldset>
                                     <legend>Upload File CSV</legend>
@@ -150,7 +229,7 @@
                                     <div class="row" style="margin: auto;">
                                         <div class="w-100"></div>
                                         <div class="col-sm-2">
-                                            <label class="display-label" for="process">Role</label>
+                                            <label class="display-label" for="process">Kolom</label>
                                         </div>
                                         <div class="col-4">
                                             <select id="process" name="process" class="form-select"></select>
@@ -183,9 +262,29 @@
     </div>
 </footer>
 
+<div class="modal" id="loading" data-backdrop="static" data-keyboard="false" role="dialog">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header modal-header-colour">
+                <h4>
+                    <strong>
+                        Please wait...
+                    </strong>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <img src="../assets/img/loading.gif" alt="Loading Dialog" style="position: relative;width: 250px"/>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     $(document).ready(function () {
         document.getElementById('year').textContent = new Date().getFullYear();
+        document.getElementById('csv-upload').style.display = 'block';
+        document.getElementById('process-csv').style.display = 'none';
+        document.getElementById('search-keyword').style.display = 'none';
     });
 
     let dropdownBtns = document.querySelectorAll('.dropdown-btn');
