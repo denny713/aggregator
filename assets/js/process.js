@@ -16,7 +16,7 @@ function doUpload() {
     }
 
     readCsv().then((data) => {
-        let result = data[0][0].split(';');
+        let result = data[0];
         let elem = document.getElementById('process');
         appendOptions(elem, result, null);
         document.getElementById('process-data').style.display = 'block';
@@ -35,26 +35,28 @@ function externalScrape(type) {
 function doProcessUpload() {
     let id = $('#process').val();
     let tbl1 = $('#table1').DataTable({
+        "destroy": true,
         "scrollX": true,
-        "responsive": true,
+        "responsive": false,
         "autoWidth": false,
         "paging": true,
         "searching": false
     });
     let tbl2 = $('#table2').DataTable({
+        "destroy": true,
         "scrollX": true,
-        "responsive": true,
+        "responsive": false,
         "autoWidth": false,
         "paging": true,
         "searching": false
     });
 
+    tbl1.clear().draw();
+    tbl2.clear().draw();
     readCsv().then((data) => {
         for (let x = 0; x < data.length; x++) {
             if (x > 0) {
-                let rowData = data[x][0].trim();
-                let result = rowData.split(';').map(item => item.trim());
-                let response = getValueFromIndex(result, id);
+                let response = getValueFromIndex(data[x], id);
                 if (response == null) {
                     showMsg('error', "Error", "Tidak Ditemukan Data pada Index ke. " + id, null);
                     return;
@@ -65,8 +67,6 @@ function doProcessUpload() {
             }
         }
 
-        tbl1.draw();
-        tbl2.draw();
         tbl1.columns.adjust().draw();
         tbl2.columns.adjust().draw();
         document.getElementById('preprocess').style.display = 'block';

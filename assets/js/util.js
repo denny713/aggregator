@@ -102,7 +102,7 @@ function processCsv(csvData) {
     let result = [];
 
     for (const element of rows) {
-        let row = element.split(",");
+        let row = element.split(";");
         result.push(row);
     }
 
