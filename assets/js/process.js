@@ -16,6 +16,7 @@ function doUpload() {
     }
 
     readCsv().then((data) => {
+        removeOptionsValue();
         let result = data[0];
         let elem = document.getElementById('process');
         appendOptions(elem, result, null);
@@ -25,14 +26,65 @@ function doUpload() {
     });
 }
 
-function externalScrape(type) {
-    document.getElementById('csv-upload').style.display = 'none';
-    document.getElementById('process-data').style.display = 'none';
-    document.getElementById('search-keyword').style.display = 'block';
-    alert(type);
+function removeOptionsValue() {
+    $("#process option").remove();
 }
 
-function doProcessUpload() {
+function externalScrape(type) {
+    removeOptionsValue();
+    let options = [];
+    switch (type) {
+        case "facebook":
+        case "instagram":
+        case "twitter":
+        case "tiktok":
+            options.push("url");
+            break;
+        case "playstore":
+        case "appstore":
+            options.push("App Name");
+            break;
+        case "acm":
+            options.push("Title");
+            options.push("Abstract");
+            break;
+        case "scholar":
+            options.push("Author");
+            break;
+        case "bookonline":
+            options.push("Title");
+            break;
+        case "youtube":
+        case "stackoverflow":
+        case "ieee":
+        case "springer":
+        case "sciencedirect":
+        case "wikipedia":
+            options.push("Keyword");
+            break;
+        case "tokopedia":
+        case "shopee":
+        case "bukalapak":
+            options.push("Produk");
+            options.push("Toko");
+            break;
+        case "detik":
+            options.push("Topic");
+            break;
+        default:
+            options = [];
+            break;
+    }
+
+    let elem = document.getElementById('process');
+    appendOptions(elem, options, null);
+
+    document.getElementById('csv-upload').style.display = 'none';
+    document.getElementById('process-data').style.display = 'block';
+    document.getElementById('search-keyword').style.display = 'block';
+}
+
+function doProcess() {
     let id = $('#process').val();
     let tbl1 = $('#table1').DataTable({
         "destroy": true,

@@ -135,6 +135,21 @@
                                     <i class="fas fa-book"></i>&nbsp;Google&nbsp;Scholar
                                 </button>
                             </li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('bookonline')">
+                                    <i class="fas fa-book"></i>&nbsp;Book&nbsp;Online
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('sciencedirect')">
+                                    <i class="fas fa-book"></i>&nbsp;Science&nbsp;Direct
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('wikipedia')">
+                                    <i class="fab fa-wikipedia-w"></i>&nbsp;Wikipedia
+                                </button>
+                            </li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -201,11 +216,7 @@
                                             <label class="display-label" for="search">Keyword</label>
                                         </div>
                                         <div class="col-6">
-                                            <input type="text" id="search" name="search">
-                                        </div>
-                                        <div class="col-4">
-                                            <input class="btn btn-primary btn-sm text-center" type="button"
-                                                   onclick="doSearch()" value="Search">
+                                            <input type="text" id="search" name="search" class="form-control">
                                         </div>
                                     </div>
                                 </fieldset>
@@ -241,7 +252,7 @@
                                         </div>
                                         <div class="col-4">
                                             <button class="btn btn-primary btn-sm text-center"
-                                                    onclick="doProcessUpload();return false;">
+                                                    onclick="doProcess();return false;">
                                                 <i class="fas fa-paper-plane"></i>
                                                 Submit
                                             </button>
@@ -321,7 +332,7 @@
                                         <input class="form-check-input" type="checkbox" id="replace_elochar"
                                                name="preprocess_checkbox" value="replace_elochar"/>
                                         <label class="form-check-label" for="replace_elochar">
-                                            Replace Elongated Char (Karakter Berulang)
+                                            Replace Elongated Character (Karakter Berulang)
                                         </label>
                                     </div>
                                     <div class="col-sm-3">
