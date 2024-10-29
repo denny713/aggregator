@@ -80,7 +80,6 @@ section {
 footer {
     padding: 1rem;
     text-align: center;
-    background-color: #bfbfbf;
 }
 
 fieldset {
@@ -141,7 +140,7 @@ legend {
     position: fixed;
     top: 76px;
     left: 0;
-    width: 320px;
+    width: 250px;
     height: calc(100vh - 60px);
     padding: 1rem;
     overflow-y: auto;
@@ -152,7 +151,7 @@ legend {
     display: block;
 }
 
-@media (min-width: 1850px) {
+@media (min-width: 750px) {
     .hamburger {
         display: none !important;
     }
@@ -162,13 +161,13 @@ legend {
     }
 }
 
-@media (max-width: 1850px) {
+@media (max-width: 750px) {
     #sidebar-container {
         display: none;
         position: fixed;
         top: 76px;
         left: 0;
-        width: 320px;
+        width: 250px;
         height: 100%;
         z-index: 1045;
         background-color: #d9d9d9;
@@ -298,4 +297,38 @@ legend {
 
 .dropdown .icon {
     margin-left: auto;
+}
+
+.btn-sidebar {
+    font-weight: bold;
+    color: #333333;
+}
+
+.modal-header-colour {
+    background-color: #0d890d;
+}
+
+table.dataTable {
+    min-width: 100%;
+}
+
+table.dataTable thead tr th {
+    background-color: #0d890d;
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+table.dataTable tbody td {
+    background-color: white;
+    max-width: 580px;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+div.dt-length {
+    display: none;
+}
+
+div.dt-container .dt-paging .dt-paging-button {
+    border-radius: 8px !important;
 }
