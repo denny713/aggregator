@@ -45,6 +45,7 @@ function externalScrape(type) {
             options.push("App Name");
             break;
         case "wikipedia":
+        case "ieee":
         case "acm":
             options.push("Title");
             options.push("Abstract");
@@ -60,10 +61,6 @@ function externalScrape(type) {
         case "springer":
         case "sciencedirect":
             options.push("Keyword");
-            break;
-        case "ieee":
-            options.push("Author");
-            options.push("Article");
             break;
         case "tokopedia":
         case "shopee":
