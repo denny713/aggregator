@@ -79,12 +79,17 @@ function externalScrape(type) {
     let elem = document.getElementById('process');
     appendOptions(elem, options, null);
 
+    $("#process-type").val(type);
+    $("#search").val("");
     document.getElementById('csv-upload').style.display = 'none';
     document.getElementById('process-data').style.display = 'block';
     document.getElementById('search-keyword').style.display = 'block';
+    document.getElementById('preprocess').style.display = 'none';
+    document.getElementById('btn-upload').style.display = 'none';
+    document.getElementById('btn-scrape').style.display = 'block';
 }
 
-function doProcess() {
+function doProcessUpload() {
     let id = $('#process').val();
     let tbl1 = $('#table1').DataTable({
         "destroy": true,

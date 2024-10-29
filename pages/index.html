@@ -251,8 +251,13 @@
                                             <select id="process" name="process" class="form-select"></select>
                                         </div>
                                         <div class="col-4">
-                                            <button class="btn btn-primary btn-sm text-center"
-                                                    onclick="doProcess();return false;">
+                                            <button class="btn btn-primary btn-sm text-center" id="btn-upload"
+                                                    onclick="doProcessUpload();return false;">
+                                                <i class="fas fa-paper-plane"></i>
+                                                Submit
+                                            </button>
+                                            <button class="btn btn-primary btn-sm text-center" id="btn-scrape"
+                                                    onclick="doProcessScrape();return false;">
                                                 <i class="fas fa-paper-plane"></i>
                                                 Submit
                                             </button>
@@ -413,6 +418,7 @@
 
                     </div>
                 </div>
+                <input type="hidden" id="process-type" name="process-type">
             </form>
         </div>
     </div>
@@ -455,6 +461,8 @@
         document.getElementById('csv-upload').style.display = 'block';
         document.getElementById('process-data').style.display = 'none';
         document.getElementById('search-keyword').style.display = 'none';
+        document.getElementById('btn-upload').style.display = 'block';
+        document.getElementById('btn-scrape').style.display = 'none';
 
         let tbl1 = document.getElementById("table1");
         if (tbl1 != null) {
@@ -465,6 +473,8 @@
         if (tbl2 != null) {
             tbl2.style.width = "100%";
         }
+
+        $("#process-type").val("upload");
     });
 
     let dropdownBtns = document.querySelectorAll('.dropdown-btn');
