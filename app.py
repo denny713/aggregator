@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from scrape.acm import scrape_acm
 from scrape.detik import scrape_detik
 from scrape.ieee import scrape_ieee
+from scrape.springer import scrape_springer
 from scrape.wiki import wiki_scrap
 
 app = Flask(__name__, static_folder='assets', template_folder='pages')
@@ -52,7 +53,7 @@ def scrap():
         case "acm":
             data = scrape_acm(typ, search)
         case "springer":
-            data = {"data": []}
+            data = scrape_springer(typ, search)
         case "scholar":
             data = {"data": []}
         case "bookonline":
