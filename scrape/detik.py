@@ -4,32 +4,26 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def scrape_detik(topik):
-    hades = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36'
-    }
-
+def scrape_detik(type, keyword):
     results = []
 
-    for page in range(1, 2):
-        query = urllib.parse.quote_plus(topik)
-        url = f'https://www.detik.com/search/searchnews?query={query}&sortby=time&page={page}'
+    for page in range(1, 3):
+        query = urllib.parse.quote_plus(keyword)
+        url = 'https://www.detik.com/search/searchnews?query={}&sortby=time&page={}'.format(query, page)
+        response = requests.get(url)
 
-        ge = requests.get(url, hades).text
-        sop = BeautifulSoup(ge, 'lxml')
-        li = sop.find('div', class_='list-content')
-        lin = li.find_all('article')
+        soup = BeautifulSoup(response.content, "html.parser")
+        if type == "title":
+            titles = soup.find_all("h3", class_="media__title")
 
-        for x in lin:
-            link = x.find('a')['href']
-            ge_ = requests.get(link, hades).text
-            sop_ = BeautifulSoup(ge_, 'lxml')
-            content = sop_.find_all('div', class_='detail__body-text itp_bodycontent')
-            for x in content:
-                x = x.find_all('p')
-                y = [y.text for y in x]
-                content_ = (''.join(y).replace('\n', '').replace('ADVERTISEMENT', '')
-                            .replace('SCROLL TO RESUME CONTENT', ''))
-                results.append(content_)
+            for title in titles:
+                results.append(title.text.strip())
+        elif type == "topic":
+            topics = soup.find_all("div", class_="media__desc")
+
+            for topic in topics:
+                results.append(topic.text.strip())
+        else:
+            results = []
 
     return {"data": results}

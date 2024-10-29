@@ -71,7 +71,7 @@ def scrap():
 
         # Indonesia news
         case "detik":
-            data = scrape_detik(search)
+            data = scrape_detik(typ, search)
 
         # Others
         case _:

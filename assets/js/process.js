@@ -57,10 +57,13 @@ function externalScrape(type) {
             break;
         case "youtube":
         case "stackoverflow":
-        case "ieee":
         case "springer":
         case "sciencedirect":
             options.push("Keyword");
+            break;
+        case "ieee":
+            options.push("Author");
+            options.push("Article");
             break;
         case "tokopedia":
         case "shopee":
@@ -69,6 +72,7 @@ function externalScrape(type) {
             options.push("Toko");
             break;
         case "detik":
+            options.push("Title");
             options.push("Topic");
             break;
         default:
