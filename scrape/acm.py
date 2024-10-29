@@ -26,4 +26,4 @@ def scrape_acm(type, keyword):
         print(f"Error: Unable to fetch the content. Status code: {response.status_code}")
         results = []
 
-    return {"data": results}
+    return results

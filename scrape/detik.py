@@ -26,4 +26,4 @@ def scrape_detik(type, keyword):
         else:
             results = []
 
-    return {"data": results}
+    return results

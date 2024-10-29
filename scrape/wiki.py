@@ -11,7 +11,7 @@ def wiki_scrap(type, keyword):
             item = wiki_sum(jsdata[obj])
         data.append(item)
 
-    return {"data": data}
+    return results
 
 
 def wiki_search(keyword, rs=20):

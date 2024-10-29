@@ -29,4 +29,4 @@ def scrape_springer(type, keyword):
     else:
         results = []
 
-    return {"data": results}
+    return results

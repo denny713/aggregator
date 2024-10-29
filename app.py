@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from scrape.acm import scrape_acm
 from scrape.detik import scrape_detik
 from scrape.ieee import scrape_ieee
+from scrape.sciencedirect import scrape_science_direct
 from scrape.springer import scrape_springer
 from scrape.wiki import wiki_scrap
 
@@ -27,25 +28,25 @@ def scrap():
     match module:
         # Social media
         case "facebook":
-            data = {"data": []}
+            data = []
         case "instagram":
-            data = {"data": []}
+            data = []
         case "youtube":
-            data = {"data": []}
+            data = []
         case "twitter":
-            data = {"data": []}
+            data = []
         case "tiktok":
-            data = {"data": []}
+            data = []
 
         # QA crowdsourcing
         case "stackoverflow":
-            data = {"data": []}
+            data = []
 
         # Application marketplace
         case "playstore":
-            data = {"data": []}
+            data = []
         case "appstore":
-            data = {"data": []}
+            data = []
 
         # Academic literature
         case "ieee":
@@ -55,21 +56,21 @@ def scrap():
         case "springer":
             data = scrape_springer(typ, search)
         case "scholar":
-            data = {"data": []}
+            data = []
         case "bookonline":
-            data = {"data": []}
+            data = []
         case "sciencedirect":
-            data = {"data": []}
+            data = scrape_science_direct(typ, search)
         case "wikipedia":
             data = wiki_scrap(typ, search)
 
         # Indonesia marketplace
         case "tokopedia":
-            data = {"data": []}
+            data = []
         case "shopee":
-            data = {"data": []}
+            data = []
         case "bukalapak":
-            data = {"data": []}
+            data = []
 
         # Indonesia news
         case "detik":
@@ -77,10 +78,10 @@ def scrap():
 
         # Others
         case _:
-            data = {"data": []}
+            data = []
 
     print("Complete processing")
-    return jsonify(data)
+    return {"data": data}
 
 
 if __name__ == '__main__':

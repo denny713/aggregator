@@ -48,6 +48,7 @@ function externalScrape(type) {
         case "ieee":
         case "acm":
         case "springer":
+        case "sciencedirect":
             options.push("Title");
             options.push("Abstract");
             break;
@@ -59,7 +60,6 @@ function externalScrape(type) {
             break;
         case "youtube":
         case "stackoverflow":
-        case "sciencedirect":
             options.push("Keyword");
             break;
         case "tokopedia":
