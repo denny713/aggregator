@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 
+from scrape.acm import scrape_acm
 from scrape.wiki import wiki_scrap
 
 app = Flask(__name__, static_folder='assets', template_folder='pages')
@@ -23,9 +24,12 @@ def scrap():
     match module:
         case "wikipedia":
             data = wiki_scrap(typ, search)
+        case "acm":
+            data = scrape_acm(typ, search)
         case _:
             data = {"data": []}
 
+    print("Complete processing")
     return jsonify(data)
 
 
