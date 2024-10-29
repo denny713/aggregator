@@ -44,6 +44,7 @@ function externalScrape(type) {
         case "appstore":
             options.push("App Name");
             break;
+        case "wikipedia":
         case "acm":
             options.push("Title");
             options.push("Abstract");
@@ -59,7 +60,6 @@ function externalScrape(type) {
         case "ieee":
         case "springer":
         case "sciencedirect":
-        case "wikipedia":
             options.push("Keyword");
             break;
         case "tokopedia":
@@ -132,8 +132,50 @@ function doProcessUpload() {
     });
 }
 
-function doSearch() {
-    alert("Search");
+function doProcessScrape() {
+    let processType = $("#process-type").val();
+    let keywordType = $("#process option:selected").text();
+    let keyword = $("#search").val();
+
+    if (keyword === "" || keyword == null) {
+        showMsg('warning', "Peringatan", "Harap isi keyword", null);
+        return;
+    }
+
+    let request = {};
+    request["module"] = processType;
+    request["type"] = keywordType;
+    request["search"] = keyword;
+
+    let tbl1 = $('#table1').DataTable({
+        "destroy": true,
+        "scrollX": true,
+        "responsive": false,
+        "autoWidth": false,
+        "paging": true,
+        "searching": false
+    });
+    let tbl2 = $('#table2').DataTable({
+        "destroy": true,
+        "scrollX": true,
+        "responsive": false,
+        "autoWidth": false,
+        "paging": true,
+        "searching": false
+    });
+
+    tbl1.clear().draw();
+    tbl2.clear().draw();
+
+    let response = get("/api/scrape", "POST", request);
+    for (let obj of response.data) {
+        tbl1.row.add([obj]);
+        tbl2.row.add([obj]);
+    }
+
+    tbl1.columns.adjust().draw();
+    tbl2.columns.adjust().draw();
+    document.getElementById('preprocess').style.display = 'block';
 }
 
 function doDownload() {
