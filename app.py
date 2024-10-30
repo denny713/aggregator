@@ -7,6 +7,7 @@ from scrape.ieee import scrape_ieee
 from scrape.scholar import scrape_google_scholar
 from scrape.sciencedirect import scrape_science_direct
 from scrape.springer import scrape_springer
+from scrape.stackoverflow import scrape_stack_overflow
 from scrape.wiki import wiki_scrap
 
 app = Flask(__name__, static_folder='assets', template_folder='pages')
@@ -43,7 +44,7 @@ def scrap():
 
         # QA crowdsourcing
         case "stackoverflow":
-            data = []
+            data = scrape_stack_overflow(typ, search)
 
         # Application marketplace
         case "playstore":

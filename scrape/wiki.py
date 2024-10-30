@@ -2,14 +2,15 @@ import wikipedia
 
 
 def wiki_scrap(type, keyword):
-    data = []
+    results = []
     jsdata = wiki_search(keyword)
     for obj in range(len(jsdata)):
         if type == "title":
             item = jsdata[obj]
         else:
             item = wiki_sum(jsdata[obj])
-        data.append(item)
+
+        results.append(item)
 
     return results
 

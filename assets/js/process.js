@@ -122,7 +122,6 @@ function externalScrape(type) {
             options.push("Abstract");
             break;
         case "youtube":
-        case "stackoverflow":
             options.push("Keyword");
             break;
         case "tokopedia":
@@ -134,6 +133,11 @@ function externalScrape(type) {
         case "detik":
             options.push("Title");
             options.push("Topic");
+            break;
+        case "stackoverflow":
+            options.push("Topic");
+            options.push("Question");
+            options.push("Answer");
             break;
         default:
             options = [];
