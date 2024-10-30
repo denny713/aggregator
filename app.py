@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 
 from scrape.acm import scrape_acm
+from scrape.appstore import scrape_app_store
 from scrape.bookonline import scrape_book_online
 from scrape.detik import scrape_detik
 from scrape.ieee import scrape_ieee
@@ -51,7 +52,7 @@ def scrap():
         case "playstore":
             data = scrape_play_store(search)
         case "appstore":
-            data = []
+            data = scrape_app_store(search)
 
         # Academic literature
         case "ieee":
