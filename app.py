@@ -4,6 +4,7 @@ from scrape.acm import scrape_acm
 from scrape.bookonline import scrape_book_online
 from scrape.detik import scrape_detik
 from scrape.ieee import scrape_ieee
+from scrape.playstore import scrape_play_store
 from scrape.scholar import scrape_google_scholar
 from scrape.sciencedirect import scrape_science_direct
 from scrape.springer import scrape_springer
@@ -48,7 +49,7 @@ def scrap():
 
         # Application marketplace
         case "playstore":
-            data = []
+            data = scrape_play_store(search)
         case "appstore":
             data = []
 
