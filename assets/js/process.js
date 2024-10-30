@@ -30,8 +30,75 @@ function removeOptionsValue() {
     $("#process option").remove();
 }
 
+function changeSearchLabel(type) {
+    let label = document.getElementById('lbl-search');
+    switch (type) {
+        case "facebook":
+            label.innerHTML = "Keyword dari Facebook";
+            break;
+        case "instagram":
+            label.innerHTML = "Keyword dari Instagram";
+            break;
+        case "twitter":
+            label.innerHTML = "Keyword dari X / Twitter";
+            break;
+        case "tiktok":
+            label.innerHTML = "Keyword dari TikTok";
+            break;
+        case "playstore":
+            label.innerHTML = "Keyword dari Play Store";
+            break;
+        case "appstore":
+            label.innerHTML = "Keyword dari App Store";
+            break;
+        case "wikipedia":
+            label.innerHTML = "Keyword dari Wikipedia";
+            break;
+        case "ieee":
+            label.innerHTML = "Keyword dari IEEE";
+            break;
+        case "acm":
+            label.innerHTML = "Keyword dari ACM";
+            break;
+        case "springer":
+            label.innerHTML = "Keyword dari Springer";
+            break;
+        case "sciencedirect":
+            label.innerHTML = "Keyword dari Science Direct";
+            break;
+        case "bookonline":
+            label.innerHTML = "Keyword dari Book Online (Goodreads)";
+            break;
+        case "scholar":
+            label.innerHTML = "Keyword dari Google Scholar";
+            break;
+        case "youtube":
+            label.innerHTML = "Keyword dari Youtube";
+            break;
+        case "stackoverflow":
+            label.innerHTML = "Keyword dari Stack Overflow";
+            break;
+        case "tokopedia":
+            label.innerHTML = "Keyword dari Tokopedia";
+            break;
+        case "shopee":
+            label.innerHTML = "Keyword dari Shopee";
+            break;
+        case "bukalapak":
+            label.innerHTML = "Keyword dari Bukalapak";
+            break;
+        case "detik":
+            label.innerHTML = "Keyword dari Detik.com";
+            break;
+        default:
+            label.innerHTML = "Keyword";
+            break;
+    }
+}
+
 function externalScrape(type) {
     removeOptionsValue();
+    changeSearchLabel(type);
     let options = [];
     switch (type) {
         case "facebook":
