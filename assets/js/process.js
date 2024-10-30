@@ -50,11 +50,9 @@ function externalScrape(type) {
         case "springer":
         case "sciencedirect":
         case "bookonline":
+        case "scholar":
             options.push("Title");
             options.push("Abstract");
-            break;
-        case "scholar":
-            options.push("Author");
             break;
         case "youtube":
         case "stackoverflow":

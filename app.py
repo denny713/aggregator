@@ -4,6 +4,7 @@ from scrape.acm import scrape_acm
 from scrape.bookonline import scrape_book_online
 from scrape.detik import scrape_detik
 from scrape.ieee import scrape_ieee
+from scrape.scholar import scrape_google_scholar
 from scrape.sciencedirect import scrape_science_direct
 from scrape.springer import scrape_springer
 from scrape.wiki import wiki_scrap
@@ -58,7 +59,7 @@ def scrap():
         case "springer":
             data = scrape_springer(typ, search)
         case "scholar":
-            data = []
+            data = scrape_google_scholar(typ, search)
         case "bookonline":
             data = scrape_book_online(typ, search)
         case "sciencedirect":
