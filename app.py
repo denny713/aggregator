@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 
 from scrape.acm import scrape_acm
+from scrape.bookonline import scrape_book_online
 from scrape.detik import scrape_detik
 from scrape.ieee import scrape_ieee
 from scrape.sciencedirect import scrape_science_direct
@@ -18,6 +19,7 @@ def index():
 
 @app.route('/api/scrape', methods=['POST'])
 def scrap():
+    print("Start processing")
     req_data = request.get_json()
     print(req_data)
 
@@ -58,7 +60,7 @@ def scrap():
         case "scholar":
             data = []
         case "bookonline":
-            data = []
+            data = scrape_book_online(typ, search)
         case "sciencedirect":
             data = scrape_science_direct(typ, search)
         case "wikipedia":
