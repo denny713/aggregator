@@ -105,6 +105,7 @@ function externalScrape(type) {
         case "instagram":
         case "twitter":
         case "tiktok":
+        case "youtube":
             options.push("url");
             break;
         case "playstore":
@@ -121,14 +122,11 @@ function externalScrape(type) {
             options.push("Title");
             options.push("Abstract");
             break;
-        case "youtube":
-            options.push("Keyword");
-            break;
         case "tokopedia":
         case "shopee":
         case "bukalapak":
-            options.push("Produk");
             options.push("Toko");
+            options.push("Produk");
             break;
         case "detik":
             options.push("Title");
