@@ -13,6 +13,7 @@ from scrape.sciencedirect import scrape_science_direct
 from scrape.springer import scrape_springer
 from scrape.stackoverflow import scrape_stack_overflow
 from scrape.wiki import wiki_scrap
+from scrape.youtube import scrape_youtube
 
 app = Flask(__name__, static_folder='assets', template_folder='pages')
 app.debug = True
@@ -40,7 +41,7 @@ def scrap():
         case "instagram":
             data = scrape_instagram(search)
         case "youtube":
-            data = []
+            data = scrape_youtube(search)
         case "twitter":
             data = []
         case "tiktok":

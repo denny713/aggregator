@@ -104,9 +104,9 @@ function externalScrape(type) {
         case "facebook":
         case "twitter":
         case "tiktok":
-        case "youtube":
             options.push("url");
             break;
+        case "youtube":
         case "instagram":
             options.push("Keyword");
             break;
