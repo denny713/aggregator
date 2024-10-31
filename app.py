@@ -12,6 +12,7 @@ from scrape.scholar import scrape_google_scholar
 from scrape.sciencedirect import scrape_science_direct
 from scrape.springer import scrape_springer
 from scrape.stackoverflow import scrape_stack_overflow
+from scrape.twitter import scrape_twitter
 from scrape.wiki import wiki_scrap
 from scrape.youtube import scrape_youtube
 
@@ -43,7 +44,7 @@ def scrap():
         case "youtube":
             data = scrape_youtube(search)
         case "twitter":
-            data = []
+            data = scrape_twitter(search)
         case "tiktok":
             data = []
 
