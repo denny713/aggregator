@@ -6,6 +6,7 @@ from scrape.bookonline import scrape_book_online
 from scrape.detik import scrape_detik
 from scrape.facebook import scrape_facebook
 from scrape.ieee import scrape_ieee
+from scrape.instagram import scrape_instagram
 from scrape.playstore import scrape_play_store
 from scrape.scholar import scrape_google_scholar
 from scrape.sciencedirect import scrape_science_direct
@@ -37,7 +38,7 @@ def scrap():
         case "facebook":
             data = scrape_facebook(search)
         case "instagram":
-            data = []
+            data = scrape_instagram(search)
         case "youtube":
             data = []
         case "twitter":

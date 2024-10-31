@@ -102,11 +102,13 @@ function externalScrape(type) {
     let options = [];
     switch (type) {
         case "facebook":
-        case "instagram":
         case "twitter":
         case "tiktok":
         case "youtube":
             options.push("url");
+            break;
+        case "instagram":
+            options.push("Keyword");
             break;
         case "playstore":
         case "appstore":
