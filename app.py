@@ -14,6 +14,7 @@ from scrape.sciencedirect import scrape_science_direct
 from scrape.springer import scrape_springer
 from scrape.stackoverflow import scrape_stack_overflow
 from scrape.tiktok import scrape_tiktok
+from scrape.tokopedia import scrape_tokopedia
 from scrape.twitter import scrape_twitter
 from scrape.wiki import wiki_scrap
 from scrape.youtube import scrape_youtube
@@ -78,7 +79,7 @@ def scrap():
 
         # Indonesia marketplace
         case "tokopedia":
-            data = []
+            data = scrape_tokopedia(typ, search)
         case "shopee":
             data = []
         case "bukalapak":
