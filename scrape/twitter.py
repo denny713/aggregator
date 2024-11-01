@@ -1,3 +1,5 @@
+import urllib
+
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -7,7 +9,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 
-def scrape_twitter(topic):
+def scrape_twitter(url_req):
     eml = '22206052001@student.uin-suka.ac.id'
     usr = '@dennyafr170713'
     pwd = 'man.utd1878'
@@ -39,7 +41,7 @@ def scrape_twitter(topic):
              "//*[@id='layers']/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div/div/button")))
         next_button2.click()
     except Exception as e:
-        print("Kullanıcı adı istenmedi, doğrudan şifre ekranına geçiliyor...")
+        print("Nama pengguna tidak diminta, langsung ke layar kata sandi...")
 
     password = wait.until(EC.presence_of_element_located(
         (By.XPATH,
@@ -51,37 +53,18 @@ def scrape_twitter(topic):
          "//*[@id='layers']/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/button")))
     login.click()
 
-    try:
-        search = wait.until(EC.presence_of_element_located(
-            (By.XPATH,
-             "//*[@id='react-root']/div/div/div[2]/main/div/div/div/div[2]/div/div[2]/div/div/div/div[1]/div/div/div/form/div[1]/div/div/div/div/div[2]/div/input")))
-        search.send_keys(topic)
-        search.send_keys(Keys.RETURN)
-
-        results = []
-        time.sleep(5)
-        soup = BeautifulSoup(browser.page_source, 'html.parser')
-        tweets = soup.select("[data-testid='tweetText']")
-
-        for tweet in tweets[:5]:
-            tweet_id = tweet.find_parent("article")["data-tweet-id"]
-            comments = get_comments(browser, tweet_id)
-            results.append(comments)
-
-        browser.quit()
-        return results
-    except Exception as e:
-        print("Terdapat error: " + e)
-        browser.quit()
-        return []
-
-
-def get_comments(browser, tweet_id):
-    browser.get(f"https://x.com/{tweet_id}/with_replies")
     time.sleep(5)
+    browser.get(url_req)
+    time.sleep(10)
+    results = []
+    try:
+        time.sleep(5)
+        comments = browser.find_elements(By.XPATH,
+                                         "//div[@class='css-146c3p1 r-8akbws r-krxsd3 r-dnmrzs r-1udh08x r-bcqeeo r-1ttztb7 r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-16dba41 r-bnwqim']")
+        for comment in comments:
+            results.append(comment.text)
 
-    soup = BeautifulSoup(browser.page_source, 'html.parser')
-    replies = soup.select("[data-testid='reply']")
+    except Exception as e:
+        print(f"Terjadi error: {e}")
 
-    comments = [reply.get_text() for reply in replies]
-    return comments
+    return results
