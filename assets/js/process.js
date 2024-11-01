@@ -127,7 +127,7 @@ function externalScrape(type) {
         case "tokopedia":
         case "shopee":
         case "bukalapak":
-            options.push("Toko");
+            options.push("Toko")
             options.push("Produk");
             break;
         case "detik":

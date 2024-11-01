@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from scrape.acm import scrape_acm
 from scrape.appstore import scrape_app_store
 from scrape.bookonline import scrape_book_online
+from scrape.bukalapak import scrape_bukalapak
 from scrape.detik import scrape_detik
 from scrape.facebook import scrape_facebook
 from scrape.ieee import scrape_ieee
@@ -81,7 +82,7 @@ def scrap():
         case "shopee":
             data = []
         case "bukalapak":
-            data = []
+            data = scrape_bukalapak(typ, search)
 
         # Indonesia news
         case "detik":
