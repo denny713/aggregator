@@ -27,23 +27,23 @@ function get(url, type, request) {
         cache: false,
         timeout: 600000,
         beforeSend: function () {
-            showLoading();
+            $("#loading").modal("show");
         }
     }).done(function (response) {
-        hideLoading();
+        $("#loading").modal("hide");
         data = response;
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        hideLoading();
+        $("#loading").modal("hide");
         try {
             let response = JSON.parse(jqXHR.responseText);
             if (response.data && response.data.error) {
                 let errorMessage = response.data.error;
-                showNotice('error', "Error", errorMessage);
+                showMsg('error', "Error", errorMessage);
             } else {
-                showNotice('error', "Error", textStatus + " : " + errorThrown);
+                showMsg('error', "Error", textStatus + " : " + errorThrown);
             }
         } catch (e) {
-            showNotice('error', "Error", textStatus + " : " + errorThrown);
+            showMsg('error', "Error", textStatus + " : " + errorThrown);
         }
         data = null;
     });
@@ -109,14 +109,6 @@ function processCsv(csvData) {
     return result;
 }
 
-function hideLoading() {
-    $("#loading").modal("hide");
-}
-
-function showLoading() {
-    $("#loading").modal("show");
-}
-
 function toggleSidebar() {
     let sidebar = document.getElementById('sidebar-container');
     let menuIcon = document.getElementById('menu-icon');
@@ -131,26 +123,5 @@ function toggleSidebar() {
         sidebar.classList.add('show');
         menuIcon.classList.remove('fa-bars');
         menuIcon.classList.add('fa-times');
-    }
-}
-
-function adjustSidebar() {
-    let sidebarContainer = document.getElementById('sidebar-container');
-    let hamburgerIcon = document.getElementById('hamburger-icon');
-    let sidebarItem = document.getElementById("sidebar-item");
-    let menuIcon = document.getElementById('menu-icon');
-    menuIcon.classList.remove('fa-times');
-    menuIcon.classList.add('fa-bars');
-
-    if (window.innerWidth >= 1850) {
-        sidebarContainer.classList.add('show');
-        sidebarContainer.classList.remove('d-none');
-        hamburgerIcon.style.display = 'none';
-        sidebarItem.style.top = '75px';
-    } else {
-        sidebarContainer.classList.remove('show');
-        sidebarContainer.classList.add('d-none');
-        hamburgerIcon.style.display = 'block';
-        sidebarItem.style.top = '0px';
     }
 }
