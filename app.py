@@ -11,6 +11,7 @@ from scrape.instagram import scrape_instagram
 from scrape.playstore import scrape_play_store
 from scrape.scholar import scrape_google_scholar
 from scrape.sciencedirect import scrape_science_direct
+from scrape.shopee import scrape_shopee
 from scrape.springer import scrape_springer
 from scrape.stackoverflow import scrape_stack_overflow
 from scrape.tiktok import scrape_tiktok
@@ -81,7 +82,7 @@ def scrap():
         case "tokopedia":
             data = scrape_tokopedia(typ, search)
         case "shopee":
-            data = []
+            data = scrape_shopee(typ, search)
         case "bukalapak":
             data = scrape_bukalapak(typ, search)
 
