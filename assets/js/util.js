@@ -17,6 +17,7 @@ function showMsg(type, title, message, callback) {
 function get(url, type, request) {
     let data = {};
 
+    $("#loading").modal("show");
     $.ajax({
         url: url,
         type: type,
@@ -47,7 +48,7 @@ function get(url, type, request) {
         }
         data = null;
     });
-
+    $("#loading").modal("hide");
     return data;
 }
 

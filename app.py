@@ -316,16 +316,30 @@ def preprocessing():
     return {"data": res_data}
 
 
-@app.route('/api/download', methods=['GET', 'POST'])
+@app.route('/api/download', methods=['POST'])
 def download():
-    data = json.loads(request.cookies.get('process-data'))
-    csv_data = data.to_csv(header=True, index=False)
+    # data = json.loads(request.cookies.get('process-data'))
+    # print(data)
+    # csv_data = data.to_csv(header=True, index=False)
+    #
+    # return Response(
+    #     csv_data,
+    #     mimetype='text/csv',
+    #     headers={'Content-Disposition': 'attachment;filename=data_series.csv'}
+    # )
 
-    return Response(
-        csv_data,
-        mimetype='text/csv',
-        headers={'Content-Disposition': 'attachment;filename=data_series.csv'}
-    )
+    try:
+        data = json.loads(request.cookies.get('process-data'))
+        df = pd.DataFrame(data)
+        csv_data = df.to_csv(index=False)
+
+        return Response(
+            csv_data,
+            mimetype='text/csv',
+            headers={'Content-Disposition': 'attachment;filename=data_series.csv'}
+        )
+    except Exception as e:
+        return Response(f"Error: {str(e)}", status=500)
 
 
 if __name__ == '__main__':

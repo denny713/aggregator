@@ -115,6 +115,9 @@ function externalScrape(type) {
             options.push("App Name");
             break;
         case "wikipedia":
+            options.push("Title");
+            options.push("Content");
+            break;
         case "ieee":
         case "acm":
         case "springer":
@@ -132,7 +135,7 @@ function externalScrape(type) {
             break;
         case "detik":
             options.push("Title");
-            options.push("Topic");
+            options.push("Resume");
             break;
         case "stackoverflow":
             options.push("Topic");
@@ -201,7 +204,7 @@ function doProcessUpload() {
         tbl2.columns.adjust().draw();
 
         setCookie("scrape-data", dataList);
-        setCookie("Process-data", dataList);
+        setCookie("process-data", dataList);
         document.getElementById('preprocess').style.display = 'block';
     }).catch((error) => {
         showMsg('error', "Error", error, null);
@@ -261,7 +264,29 @@ function doProcessScrape() {
 }
 
 function doDownload() {
-    get("/api/download", "POST", null);
+    // get("/api/download", "POST", null);
+
+    $.ajax({
+        url: '/api/download',
+        type: 'POST',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function(response) {
+            let url = window.URL.createObjectURL(response);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = 'data_series.csv';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            showMsg('success', "Sukses", "Download berhasil!");
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            showMsg('error', "Error", "Download gagal: " + textStatus);
+        }
+    });
 }
 
 function doReset() {
