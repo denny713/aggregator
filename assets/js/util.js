@@ -17,6 +17,7 @@ function showMsg(type, title, message, callback) {
 function get(url, type, request) {
     let data = {};
 
+    $("#loading").modal("show");
     $.ajax({
         url: url,
         type: type,
@@ -47,7 +48,7 @@ function get(url, type, request) {
         }
         data = null;
     });
-
+    $("#loading").modal("hide");
     return data;
 }
 
@@ -124,4 +125,15 @@ function toggleSidebar() {
         menuIcon.classList.remove('fa-bars');
         menuIcon.classList.add('fa-times');
     }
+}
+
+function setCookie(name, value) {
+    const date = new Date();
+    date.setTime(date.getTime() + (24 * 60 * 60 * 1000));
+    let expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + JSON.stringify(value) + ";" + expires + ";path=/";
+}
+
+function removeCookie(name) {
+    document.cookie = name + '=;Max-Age=0;path=/';
 }
