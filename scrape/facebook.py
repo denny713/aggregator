@@ -6,7 +6,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 
-def scrape_facebook(url_req):
+def scrape_facebook(url_req, size):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--disable-notifications")
     browser = webdriver.Chrome(options=chrome_options)
@@ -29,9 +29,14 @@ def scrape_facebook(url_req):
     results = []
     try:
         time.sleep(5)
+        record = 0
         comments = browser.find_elements(By.XPATH, "//div[@class='xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs']")
         for comment in comments:
+            record += 1
             results.append(comment.text)
+
+            if size != "" and int(size) == record:
+                break
 
     except Exception as e:
         print(f"Terjadi error: {e}")

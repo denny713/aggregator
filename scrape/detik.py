@@ -18,7 +18,7 @@ def scrape_detik(type, keyword):
 
             for title in titles:
                 results.append(title.text.strip())
-        elif type == "topic":
+        elif type == "resume":
             topics = soup.find_all("div", class_="media__desc")
 
             for topic in topics:

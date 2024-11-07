@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 import time
 
 
-def scrape_twitter(url_req):
+def scrape_twitter(url_req, size):
     eml = '22206052001@student.uin-suka.ac.id'
     usr = '@dennyafr170713'
     pwd = 'man.utd1878'
@@ -54,11 +54,16 @@ def scrape_twitter(url_req):
     time.sleep(10)
     results = []
     try:
+        record = 0
         time.sleep(5)
         comments = browser.find_elements(By.XPATH,
                                          "//div[@class='css-146c3p1 r-8akbws r-krxsd3 r-dnmrzs r-1udh08x r-bcqeeo r-1ttztb7 r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-16dba41 r-bnwqim']")
         for comment in comments:
+            record += 1
             results.append(comment.text)
+
+            if size != "" and int(size) == record:
+                break
 
     except Exception as e:
         print(f"Terjadi error: {e}")

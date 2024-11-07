@@ -46,19 +46,20 @@ def scrap():
     module = req_data.get('module')
     typ = req_data.get('type').lower()
     search = req_data.get('search')
+    size = req_data.get('size')
 
     match module:
         # Social media
         case "facebook":
-            data = scrape_facebook(search)
+            data = scrape_facebook(search, size)
         case "instagram":
-            data = scrape_instagram(search)
+            data = scrape_instagram(search, size)
         case "youtube":
-            data = scrape_youtube(search)
+            data = scrape_youtube(search, size)
         case "twitter":
-            data = scrape_twitter(search)
+            data = scrape_twitter(search, size)
         case "tiktok":
-            data = scrape_tiktok(search)
+            data = scrape_tiktok(search, size)
 
         # QA crowdsourcing
         case "stackoverflow":
