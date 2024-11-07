@@ -11,8 +11,8 @@ def scrape_youtube(keyword, size):
         maxResults=10
     ).execute()
 
+    max_size = int(size) if size else 300
     results = []
-    record = 0
     for search_result in search_response.get('items', []):
         if search_result['id']['kind'] == 'youtube#video':
             video_id = search_result['id']['videoId']
@@ -26,18 +26,17 @@ def scrape_youtube(keyword, size):
                 ).execute()
 
                 for comment in comments['items']:
-                    record += 1
                     comment_snippet = comment['snippet']['topLevelComment']['snippet']
                     comment_text = comment_snippet['textDisplay']
                     results.append(comment_text)
 
-                    if size != "" and int(size) == record:
+                    if len(results) == max_size:
                         break
             except:
                 print("Fitur komentar dinonaktifkan oleh pemilik video")
                 continue
 
-            if size != "" and int(size) == record:
+            if len(results) == max_size:
                 break
 
     return results

@@ -4,10 +4,8 @@ import requests
 
 
 def scrape_tiktok(url_req, size):
-    if (size == ""):
-        size = "300"
     post_id = url_req.split('/')[-1]
-    max_comment = int(size)
+    max_comment = int(size) if size else 300
 
     headers = {
         'accept': '*/*',

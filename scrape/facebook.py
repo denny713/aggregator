@@ -11,6 +11,7 @@ def scrape_facebook(url_req, size):
     chrome_options.add_argument("--disable-notifications")
     browser = webdriver.Chrome(options=chrome_options)
 
+    max_size = int(size) if size else 300
     url = 'https://facebook.com'
     username = "suka.enelpe@gmail.com"
     password = "Sukanlp123."
@@ -29,13 +30,11 @@ def scrape_facebook(url_req, size):
     results = []
     try:
         time.sleep(5)
-        record = 0
         comments = browser.find_elements(By.XPATH, "//div[@class='xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs']")
         for comment in comments:
-            record += 1
             results.append(comment.text)
 
-            if size != "" and int(size) == record:
+            if max_size == len(results):
                 break
 
     except Exception as e:

@@ -53,16 +53,15 @@ def scrape_twitter(url_req, size):
     browser.get(url_req)
     time.sleep(10)
     results = []
+    max_size = int(size) if size else 300
     try:
-        record = 0
         time.sleep(5)
         comments = browser.find_elements(By.XPATH,
                                          "//div[@class='css-146c3p1 r-8akbws r-krxsd3 r-dnmrzs r-1udh08x r-bcqeeo r-1ttztb7 r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-16dba41 r-bnwqim']")
         for comment in comments:
-            record += 1
             results.append(comment.text)
 
-            if size != "" and int(size) == record:
+            if len(results) == max_size:
                 break
 
     except Exception as e:
