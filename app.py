@@ -63,13 +63,17 @@ def scrap():
 
         # QA crowdsourcing
         case "stackoverflow":
-            data = scrape_stack_overflow(typ, search)
+            data = scrape_stack_overflow(typ, search, size)
 
         # Application marketplace
-        case "playstore":
-            data = scrape_play_store(search)
-        case "appstore":
-            data = scrape_app_store(search)
+        case "playstore-ind":
+            data = scrape_play_store("id", search, size)
+        case "appstore-ind":
+            data = scrape_app_store("id", search, size)
+        case "playstore-int":
+            data = scrape_play_store("us", search, size)
+        case "appstore-int":
+            data = scrape_app_store("us", search, size)
 
         # Academic literature
         case "ieee":

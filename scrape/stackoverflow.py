@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def scrape_stack_overflow(type, keyword):
+def scrape_stack_overflow(type, keyword, size):
     query = keyword.replace(" ", "-")
     base_url = 'https://stackoverflow.com'
     url = '{}/questions/tagged/{}'.format(base_url, query)
@@ -11,7 +11,9 @@ def scrape_stack_overflow(type, keyword):
     soup_content = soup.find_all('h3', class_='s-post-summary--content-title')
 
     results = []
+    record = 0
     for scontent in soup_content:
+        record += 1
         link = scontent.find('a', class_='s-link').get('href')
         content_response = requests.get(base_url + link)
         content_soup = BeautifulSoup(content_response.content, 'html.parser')
@@ -29,5 +31,8 @@ def scrape_stack_overflow(type, keyword):
                 continue
         else:
             results = []
+
+        if size != "" and int(size) == record:
+            break
 
     return results

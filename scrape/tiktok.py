@@ -1,11 +1,10 @@
 import json
 
 import requests
-from bs4 import BeautifulSoup
 
 
 def scrape_tiktok(url_req, size):
-    if(size == ""):
+    if (size == ""):
         size = "300"
     post_id = url_req.split('/')[-1]
     max_comment = int(size)
