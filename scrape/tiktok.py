@@ -1,10 +1,14 @@
 import json
 
 import requests
+from bs4 import BeautifulSoup
 
 
 def scrape_tiktok(url_req, size):
+    if(size == ""):
+        size = "300"
     post_id = url_req.split('/')[-1]
+    max_comment = int(size)
 
     headers = {
         'accept': '*/*',
@@ -27,7 +31,7 @@ def scrape_tiktok(url_req, size):
 
     while 1:
         try:
-            if len(results) >= size:
+            if len(results) >= max_comment:
                 print('Sudah mencapai batas jumlah komentar')
                 break
 
@@ -45,7 +49,7 @@ def scrape_tiktok(url_req, size):
                     com = cm['text']
                 results.append(com)
 
-                if len(results) == size:
+                if len(results) == max_comment:
                     print('Sudah mencapai batas jumlah komentar')
                     break
 
