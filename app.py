@@ -25,7 +25,7 @@ from scrape.stackoverflow import scrape_stack_overflow
 from scrape.tiktok import scrape_tiktok
 from scrape.tokopedia import scrape_tokopedia
 from scrape.twitter import scrape_twitter
-from scrape.wiki import wiki_scrap
+from scrape.wiki import wiki_scrap, set_language
 from scrape.youtube import scrape_youtube
 
 app = Flask(__name__, static_folder='assets', template_folder='pages')
@@ -39,7 +39,7 @@ def index():
 
 @app.route('/api/scrape', methods=['POST'])
 def scrap():
-    print("Start processing")
+    print("Proses scrapping dimulai")
     req_data = request.get_json()
     print(req_data)
 
@@ -77,19 +77,23 @@ def scrap():
 
         # Academic literature
         case "ieee":
-            data = scrape_ieee(typ, search)
+            data = scrape_ieee(typ, search, size)
         case "acm":
-            data = scrape_acm(typ, search)
+            data = scrape_acm(typ, search, size)
         case "springer":
-            data = scrape_springer(typ, search)
+            data = scrape_springer(typ, search, size)
         case "scholar":
-            data = scrape_google_scholar(typ, search)
+            data = scrape_google_scholar(typ, search, size)
         case "bookonline":
-            data = scrape_book_online(typ, search)
+            data = scrape_book_online(typ, search, size)
         case "sciencedirect":
-            data = scrape_science_direct(typ, search)
-        case "wikipedia":
-            data = wiki_scrap(typ, search)
+            data = scrape_science_direct(typ, search, size)
+        case "wikipedia-eng":
+            set_language('en')
+            data = wiki_scrap(typ, search, size)
+        case "wikipedia-ind":
+            set_language('id')
+            data = wiki_scrap(typ, search, size)
 
         # Indonesia marketplace
         case "tokopedia":
@@ -107,7 +111,7 @@ def scrap():
         case _:
             data = []
 
-    print("Complete processing")
+    print("Proses scrapping selesai")
     return {"data": data}
 
 

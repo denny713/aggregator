@@ -123,7 +123,8 @@ function externalScrape(type) {
         case "appstore":
             options.push("App Name");
             break;
-        case "wikipedia":
+        case "wikipedia-ind":
+        case "wikipedia-eng":
             options.push("Title");
             options.push("Content");
             break;

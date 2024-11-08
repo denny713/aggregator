@@ -5,7 +5,7 @@ import requests
 import xmltodict
 
 
-def scrape_science_direct(type, keyword):
+def scrape_science_direct(type, keyword, size):
     headers = {
         "Accept": "application/xml",
         "X-ELS-APIKey": "69691fd2a98b018877fe90d4d922b315",
@@ -13,6 +13,7 @@ def scrape_science_direct(type, keyword):
         'Cookie': '__cf_bm=68HlFrvAa8VWZickduad8eTYRKyqZLqKI.0UNLEEr4Q-1696542666-0-AYrM1Pzt1jwXzBkZTD7BeiJKSLRYOKAyWZtt6KTg+rCCKgr6CpLrCkje+JyY81qXnxnSWo4tS/Lc/mbWYlfeINE='
     }
 
+    max_size = int(size) if size else 300
     query = urllib.parse.quote_plus(keyword)
     url = 'https://api.elsevier.com/content/search/sciencedirect?query={}'.format(query)
     response = requests.request("GET", url, headers=headers, data={})
@@ -34,5 +35,8 @@ def scrape_science_direct(type, keyword):
             resp_object = json.loads(resp_data)
             abstract = resp_object['full-text-retrieval-response']['coredata']['dc:description']
             results.append(abstract)
+
+        if len(results) >= max_size:
+            break
 
     return results
