@@ -4,7 +4,7 @@ import re
 import neattext.functions as nfx
 import pandas as pd
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
-from flask import Flask, render_template, request, make_response, Response
+from flask import Flask, render_template, request, Response
 from nltk import word_tokenize
 from nltk.corpus import stopwords
 
@@ -97,11 +97,11 @@ def scrap():
 
         # Indonesia marketplace
         case "tokopedia":
-            data = scrape_tokopedia(typ, search)
+            data = scrape_tokopedia(typ, search, size)
         case "shopee":
-            data = scrape_shopee(typ, search)
+            data = scrape_shopee(typ, search, size)
         case "bukalapak":
-            data = scrape_bukalapak(typ, search)
+            data = scrape_bukalapak(typ, search, size)
 
         # Indonesia news
         case "detik":

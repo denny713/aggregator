@@ -1,4 +1,3 @@
-import json
 import time
 import urllib
 
@@ -10,7 +9,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 
-def scrape_tokopedia(type, keyword):
+def scrape_tokopedia(type, keyword, size):
+    max_size = int(size) if size else 300
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--disable-notifications")
     browser = webdriver.Chrome(options=chrome_options)
