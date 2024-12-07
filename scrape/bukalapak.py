@@ -4,8 +4,9 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def scrape_bukalapak(type, keyword):
+def scrape_bukalapak(type, keyword, size):
     results = []
+    max_size = int(size) if size else 300
     if type == "produk":
         query = urllib.parse.quote_plus(keyword)
         url_produk = 'https://www.bukalapak.com/products/s?brand_badge=false&campaign_name=&page=1&search%5Bkeywords%5D={}'.format(

@@ -2,9 +2,11 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def scrape_acm(type, keyword):
-    url = 'https://dl.acm.org/action/doSearch?AllField={}'.format(keyword)
+def scrape_acm(type, keyword, size):
+    base_url = 'https://dl.acm.org'
+    url = '{}/action/doSearch?AllField={}'.format(base_url, keyword)
     response = requests.get(url)
+    max_size = int(size) if size else 300
 
     results = []
     if response.status_code == 200:
@@ -15,11 +17,22 @@ def scrape_acm(type, keyword):
 
             for title in titles:
                 results.append(title.text.strip())
+
+                if len(results) == max_size:
+                    break
         elif type == "abstract":
-            abstracts = soup.find_all("div", class_="issue-item__abstract")
+            abstracts = soup.find_all("h5", class_="issue-item__title")
 
             for abstract in abstracts:
-                results.append(abstract.text.strip())
+                link = abstract.find('a', href=True)['href']
+                detail_uri = base_url + link
+                detail_response = requests.get(detail_uri)
+                detail_soup = BeautifulSoup(detail_response.content, "html.parser")
+                abstract_text = detail_soup.find("div", attrs={"role": "paragraph"}).text
+                results.append(abstract_text)
+
+                if len(results) == max_size:
+                    break
         else:
             results = []
     else:

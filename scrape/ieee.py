@@ -4,10 +4,10 @@ import urllib
 import requests
 
 
-def scrape_ieee(type, keyword):
+def scrape_ieee(type, keyword, size):
     api_key = '6hu2a2ms42qzx8thtvz52mzk'
     query = urllib.parse.quote_plus(keyword)
-    max_record = 30
+    max_record = int(size) if size else 300
     uri_api = ('http://ieeexploreapi.ieee.org/api/v1/search/articles?max_records={}&querytext={}&apikey={}'
                .format(max_record, query, api_key))
     response = requests.get(uri_api)

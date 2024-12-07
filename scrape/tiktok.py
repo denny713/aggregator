@@ -1,12 +1,11 @@
 import json
 
 import requests
-from bs4 import BeautifulSoup
 
 
-def scrape_tiktok(url_req):
+def scrape_tiktok(url_req, size):
     post_id = url_req.split('/')[-1]
-    max_comment = 80
+    max_comment = int(size) if size else 300
 
     headers = {
         'accept': '*/*',

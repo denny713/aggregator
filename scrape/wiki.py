@@ -1,9 +1,14 @@
 import wikipedia
 
 
-def wiki_scrap(type, keyword):
+def set_language(lang="en"):
+    wikipedia.set_lang(lang)
+
+
+def wiki_scrap(type, keyword, size):
     results = []
-    jsdata = wiki_search(keyword)
+    max_size = int(size) if size else 300
+    jsdata = wiki_search(keyword, max_size)
     for obj in range(len(jsdata)):
         if type == "title":
             item = jsdata[obj]
@@ -15,7 +20,7 @@ def wiki_scrap(type, keyword):
     return results
 
 
-def wiki_search(keyword, rs=20):
+def wiki_search(keyword, rs):
     return wikipedia.search(keyword, results=rs)
 
 

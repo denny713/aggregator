@@ -4,7 +4,7 @@ import re
 import neattext.functions as nfx
 import pandas as pd
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
-from flask import Flask, render_template, request, make_response, Response
+from flask import Flask, render_template, request, Response
 from nltk import word_tokenize
 from nltk.corpus import stopwords
 
@@ -25,7 +25,7 @@ from scrape.stackoverflow import scrape_stack_overflow
 from scrape.tiktok import scrape_tiktok
 from scrape.tokopedia import scrape_tokopedia
 from scrape.twitter import scrape_twitter
-from scrape.wiki import wiki_scrap
+from scrape.wiki import wiki_scrap, set_language
 from scrape.youtube import scrape_youtube
 
 app = Flask(__name__, static_folder='assets', template_folder='pages')
@@ -39,70 +39,79 @@ def index():
 
 @app.route('/api/scrape', methods=['POST'])
 def scrap():
-    print("Start processing")
+    print("Proses scrapping dimulai")
     req_data = request.get_json()
     print(req_data)
 
     module = req_data.get('module')
     typ = req_data.get('type').lower()
     search = req_data.get('search')
+    size = req_data.get('size')
 
     match module:
         # Social media
         case "facebook":
-            data = scrape_facebook(search)
+            data = scrape_facebook(search, size)
         case "instagram":
-            data = scrape_instagram(search)
+            data = scrape_instagram(search, size)
         case "youtube":
-            data = scrape_youtube(search)
+            data = scrape_youtube(search, size)
         case "twitter":
-            data = scrape_twitter(search)
+            data = scrape_twitter(search, size)
         case "tiktok":
-            data = scrape_tiktok(search)
+            data = scrape_tiktok(search, size)
 
         # QA crowdsourcing
         case "stackoverflow":
-            data = scrape_stack_overflow(typ, search)
+            data = scrape_stack_overflow(typ, search, size)
 
         # Application marketplace
-        case "playstore":
-            data = scrape_play_store(search)
-        case "appstore":
-            data = scrape_app_store(search)
+        case "playstore-ind":
+            data = scrape_play_store("id", search, size)
+        case "appstore-ind":
+            data = scrape_app_store("id", search, size)
+        case "playstore-int":
+            data = scrape_play_store("us", search, size)
+        case "appstore-int":
+            data = scrape_app_store("us", search, size)
 
         # Academic literature
         case "ieee":
-            data = scrape_ieee(typ, search)
+            data = scrape_ieee(typ, search, size)
         case "acm":
-            data = scrape_acm(typ, search)
+            data = scrape_acm(typ, search, size)
         case "springer":
-            data = scrape_springer(typ, search)
+            data = scrape_springer(typ, search, size)
         case "scholar":
-            data = scrape_google_scholar(typ, search)
+            data = scrape_google_scholar(typ, search, size)
         case "bookonline":
-            data = scrape_book_online(typ, search)
+            data = scrape_book_online(typ, search, size)
         case "sciencedirect":
-            data = scrape_science_direct(typ, search)
-        case "wikipedia":
-            data = wiki_scrap(typ, search)
+            data = scrape_science_direct(typ, search, size)
+        case "wikipedia-eng":
+            set_language('en')
+            data = wiki_scrap(typ, search, size)
+        case "wikipedia-ind":
+            set_language('id')
+            data = wiki_scrap(typ, search, size)
 
         # Indonesia marketplace
         case "tokopedia":
-            data = scrape_tokopedia(typ, search)
+            data = scrape_tokopedia(typ, search, size)
         case "shopee":
-            data = scrape_shopee(typ, search)
+            data = scrape_shopee(typ, search, size)
         case "bukalapak":
-            data = scrape_bukalapak(typ, search)
+            data = scrape_bukalapak(typ, search, size)
 
         # Indonesia news
         case "detik":
-            data = scrape_detik(typ, search)
+            data = scrape_detik(typ, search, size)
 
         # Others
         case _:
             data = []
 
-    print("Complete processing")
+    print("Proses scrapping selesai")
     return {"data": data}
 
 
