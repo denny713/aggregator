@@ -249,18 +249,24 @@ function doProcessScrape() {
     tbl1.clear().draw();
     tbl2.clear().draw();
 
-    let response = get("/api/scrape", "POST", request);
-    for (let obj of response.data) {
-        tbl1.row.add([obj]);
-        tbl2.row.add([obj]);
-    }
+    showLoading();
+    get("/api/scrape", "POST", request).then(response => {
+        for (let obj of response.data) {
+            tbl1.row.add([obj]);
+            tbl2.row.add([obj]);
+        }
 
-    tbl1.columns.adjust().draw();
-    tbl2.columns.adjust().draw();
+        tbl1.columns.adjust().draw();
+        tbl2.columns.adjust().draw();
 
-    setCookie("scrape-data", response.data);
-    setCookie("process-data", response.data);
-    document.getElementById('preprocess').style.display = 'block';
+        setCookie("scrape-data", response.data);
+        setCookie("process-data", response.data);
+        document.getElementById('preprocess').style.display = 'block';
+    }).catch(err => {
+        showMsg('error', "Terjadi Kesalahan", err);
+    }).finally(() => {
+        hideLoading();
+    });
 }
 
 function doDownload() {
@@ -272,7 +278,7 @@ function doDownload() {
         xhrFields: {
             responseType: 'blob'
         },
-        success: function(response) {
+        success: function (response) {
             let url = window.URL.createObjectURL(response);
             let a = document.createElement('a');
             a.href = url;
@@ -283,7 +289,7 @@ function doDownload() {
 
             showMsg('success', "Sukses", "Download berhasil!");
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             showMsg('error', "Error", "Download gagal: " + textStatus);
         }
     });
