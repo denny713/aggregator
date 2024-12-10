@@ -112,6 +112,7 @@ def scrap():
             data = []
 
     print("Proses scrapping selesai")
+    print(data)
     return {"data": data}
 
 

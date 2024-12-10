@@ -248,15 +248,16 @@ function doProcessScrape() {
     let tbl1 = $('#table1').DataTable({
         "destroy": true,
         "scrollX": true,
-        "responsive": false,
+        "responsive": true,
         "autoWidth": false,
         "paging": true,
         "searching": false
     });
+
     let tbl2 = $('#table2').DataTable({
         "destroy": true,
         "scrollX": true,
-        "responsive": false,
+        "responsive": true,
         "autoWidth": false,
         "paging": true,
         "searching": false
@@ -268,8 +269,8 @@ function doProcessScrape() {
     showLoading();
     get("/api/scrape", "POST", request).then(response => {
         for (let obj of response.data) {
-            tbl1.row.add([obj]);
-            tbl2.row.add([obj]);
+            tbl1.row.add([obj.user, obj.timestamp, obj.rating, obj.content]);
+            tbl2.row.add([obj.user, obj.timestamp, obj.rating, obj.content]);
         }
 
         tbl1.columns.adjust().draw();

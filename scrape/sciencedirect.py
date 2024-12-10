@@ -24,19 +24,43 @@ def scrape_science_direct(type, keyword, size):
     results = []
 
     for data in datas:
+        authors_data = data.get('authors', {}).get('author', [])
+        if isinstance(authors_data, list):
+            authors = ', '.join(
+                [author.get('#text', '') if isinstance(author, dict) else author for author in authors_data])
+        elif isinstance(authors_data, dict):
+            authors = authors_data.get('#text', '')
+        else:
+            authors = authors_data if isinstance(authors_data, str) else ''
+
+        timestamp = data.get('prism:coverDate', 'N/A')
+
         if type == "title":
-            results.append(data['dc:title'])
+            content = data.get('dc:title', 'N/A')
         else:
             pii = data['pii']
-            link = 'https://api.elsevier.com/content/article/pii/{}'.format(pii)
-            resp = requests.request("GET", link, headers=headers)
-            resp_dict = xmltodict.parse(resp.text)
-            resp_data = json.dumps(resp_dict, indent=4, sort_keys=True)
-            resp_object = json.loads(resp_data)
-            abstract = resp_object['full-text-retrieval-response']['coredata']['dc:description']
-            results.append(abstract)
+            if pii:
+                link = 'https://api.elsevier.com/content/article/pii/{}'.format(pii)
+                resp = requests.request("GET", link, headers=headers)
+                if resp.status_code == 200:
+                    resp_dict = xmltodict.parse(resp.text)
+                    resp_data = json.dumps(resp_dict, indent=4, sort_keys=True)
+                    resp_object = json.loads(resp_data)
+                    content = resp_object.get('full-text-retrieval-response', {}).get('coredata', {}).get(
+                        'dc:description', 'N/A')
+                else:
+                    content = 'Content tidak tersedia'
+            else:
+                content = 'PII tidak ditemukan'
 
-        if len(results) >= max_size:
+        results.append({
+            'user': authors,
+            'timestamp': timestamp,
+            'rating': '',
+            'content': content
+        })
+
+        if len(results) == max_size:
             break
 
     return results

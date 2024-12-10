@@ -1,4 +1,5 @@
 import json
+import re
 import urllib
 
 import requests
@@ -14,16 +15,24 @@ def scrape_google_scholar(type, keyword, size):
 
     results = []
     for result in response_data:
+        summary = result.get("publication_info", {}).get("summary", "")
+        author_list = re.match(r"^(.*?) -", summary)
+        authors = author_list.group(1) if author_list else ""
+
         if type == "title":
-            results.append(result['title'])
-        elif type == "abstract":
+            content = result['title']
+        else:
             detail_link = result['inline_links']['cited_by']['serpapi_scholar_link']
             detail_uri = ('{}&api_key={}'.format(detail_link, api_key))
             detail_response = requests.get(detail_uri)
             detail_response_data = json.loads(detail_response.text)['organic_results']
-            abstract = " ".join(item["snippet"].replace("…", "") for item in detail_response_data)
-            results.append(abstract)
-        else:
-            results = []
+            content = " ".join(item["snippet"].replace("…", "") for item in detail_response_data)
+
+        results.append({
+            'user': authors,
+            'timestamp': '',
+            'rating': '',
+            'content': content
+        })
 
     return results

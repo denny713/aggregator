@@ -11,28 +11,34 @@ def scrape_springer(type, keyword, size):
     url = '{}/search/page/1?facet-content-type=Article&query={}'.format(global_url, query)
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
-
     results = []
-    if type == "title":
-        titles = soup.find_all("a", class_="title")
+    titles = soup.find_all("a", class_="title")
+    for title in titles:
+        link = global_url + title["href"]
+        article = requests.get(link)
+        article_soup = BeautifulSoup(article.content, "html.parser")
 
-        for title in titles:
-            results.append(title.text.strip())
+        date_element = article_soup.find('time')
+        timestamp = date_element['datetime']
 
-            if len(results) >= max_size:
-                break
-    elif type == "abstract":
-        titles = soup.find_all("a", class_="title")
+        author_list = [a.get_text(strip=True) for a in
+                       article_soup.select('li.c-article-author-list__item a[data-test="author-name"]')]
+        authors = ', '.join(author_list)
 
-        for title in titles:
-            link = global_url + title["href"]
-            article = requests.get(link)
-            article_soup = BeautifulSoup(article.content, "html.parser")
-            abstract = article_soup.find("div", class_="c-article-section__content")
-            results.append(abstract.text.strip())
+        if type == "title":
+            content = title.text.strip()
+        else:
+            content = article_soup.find("div", class_="c-article-section__content").text.strip()
 
-            if len(results) >= max_size:
-                break
+        results.append({
+            'user': authors,
+            'timestamp': timestamp,
+            'rating': '',
+            'content': content
+        })
+
+        if len(results) == max_size:
+            break
     else:
         results = []
 
