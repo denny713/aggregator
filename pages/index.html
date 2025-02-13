@@ -97,23 +97,23 @@
                         </a>
                         <ul class="dropdown-content">
                             <li>
-                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('playstore')">
-                                    <i class="fab fa-google-play"></i>&nbsp;Play&nbsp;Store(Ind.)
+                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('playstore-ind')">
+                                    <i class="fab fa-google-play"></i>&nbsp;Play&nbsp;Store&nbsp;(Indonesian)
                                 </button>
                             </li>
                             <li>
-                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('appstore')">
-                                    <i class="fab fa-apple"></i>&nbsp;App&nbsp;Store(Ind.)
+                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('appstore-ind')">
+                                    <i class="fab fa-apple"></i>&nbsp;App&nbsp;Store&nbsp;(Indonesian)
                                 </button>
                             </li>
                             <li>
-                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('playstore')">
-                                    <i class="fab fa-google-play"></i>&nbsp;Play&nbsp;Store(Int.)
+                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('playstore-int')">
+                                    <i class="fab fa-google-play"></i>&nbsp;Play&nbsp;Store&nbsp;(International)
                                 </button>
                             </li>
                             <li>
-                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('appstore')">
-                                    <i class="fab fa-apple"></i>&nbsp;App&nbsp;Store(Int.)
+                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('appstore-int')">
+                                    <i class="fab fa-apple"></i>&nbsp;App&nbsp;Store&nbsp;(International)
                                 </button>
                             </li>
                         </ul>
@@ -156,13 +156,13 @@
                                 </button>
                             </li>
                             <li>
-                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('wikipedia')">
-                                    <i class="fab fa-wikipedia-w"></i>&nbsp;Wikipedia(Eng.)
+                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('wikipedia-eng')">
+                                    <i class="fab fa-wikipedia-w"></i>&nbsp;Wikipedia&nbsp;(English)
                                 </button>
                             </li>
                             <li>
-                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('wikipedia')">
-                                    <i class="fab fa-wikipedia-w"></i>&nbsp;Wikipedia(Ind.)
+                                <button class="btn btn-link btn-sidebar" onclick="externalScrape('wikipedia-ind')">
+                                    <i class="fab fa-wikipedia-w"></i>&nbsp;Wikipedia&nbsp;(Indonesian)
                                 </button>
                             </li>
                         </ul>
@@ -209,7 +209,7 @@
             </div>
         </div>
 
-        <div class="col-md-10 p-4 content">
+        <div class="col-md-10 p-5 content">
             <form>
                 <div class="row form-group">
                     <div class="col">
@@ -227,11 +227,22 @@
                                     <legend>Input Keyword atau URL</legend>
                                     <div class="row" style="margin: auto;">
                                         <div class="w-100"></div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-7">
                                             <label class="display-label" id="lbl-search" for="search"></label>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-sm-5">
                                             <input type="text" id="search" name="search" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin: auto;">
+                                        <div class="w-100"></div>
+                                        <div class="col-sm-7">
+                                            <label class="display-label" id="lbl-size"
+                                                   for="size">Maksimal&nbsp;Pencarian</label>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <input type="text" id="size" name="size" class="form-control text-end"
+                                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -399,27 +410,35 @@
                             </div>
                             <br>
                             <div class="row" style="margin: auto;">
-                                <div class="col-sm-6">
-                                    <table id="table1" class="table table-striped table-hover table-bordered"
-                                           style="width: 100%">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 100%">Text Asli</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="table-responsive"></tbody>
-                                    </table>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table id="table1" class="table table-striped table-bordered display">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 20%">Username / Author</th>
+                                                <th style="width: 10%">Tanggal Posting</th>
+                                                <th style="width: 10%">Rating</th>
+                                                <th style="width: 60%">Text Asli</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="table-responsive"></tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <table id="table2" class="table table-striped table-hover table-bordered"
-                                           style="width: 100%">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 100%">Preview</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="table-responsive"></tbody>
-                                    </table>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table id="table2" class="table table-striped table-bordered display">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 20%">Username / Author</th>
+                                                <th style="width: 10%">Tanggal Posting</th>
+                                                <th style="width: 10%">Rating</th>
+                                                <th style="width: 60%">Preview</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="table-responsive"></tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             <br>

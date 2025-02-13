@@ -45,14 +45,23 @@ function changeSearchLabel(type) {
         case "tiktok":
             label.innerHTML = "Keyword dari TikTok";
             break;
-        case "playstore":
-            label.innerHTML = "Keyword dari Play Store";
+        case "playstore-ind":
+            label.innerHTML = "Keyword dari Play Store Indonesian Version";
             break;
-        case "appstore":
-            label.innerHTML = "Keyword dari App Store";
+        case "appstore-ind":
+            label.innerHTML = "Keyword dari App Store Indonesian Version";
             break;
-        case "wikipedia":
-            label.innerHTML = "Keyword dari Wikipedia";
+        case "playstore-int":
+            label.innerHTML = "Keyword dari Play Store International Version";
+            break;
+        case "appstore-int":
+            label.innerHTML = "Keyword dari App Store International Version";
+            break;
+        case "wikipedia-eng":
+            label.innerHTML = "Keyword dari Wikipedia English Version";
+            break;
+        case "wikipedia-ind":
+            label.innerHTML = "Keyword dari Wikipedia Indonesian Version";
             break;
         case "ieee":
             label.innerHTML = "Keyword dari IEEE";
@@ -114,7 +123,8 @@ function externalScrape(type) {
         case "appstore":
             options.push("App Name");
             break;
-        case "wikipedia":
+        case "wikipedia-ind":
+        case "wikipedia-eng":
             options.push("Title");
             options.push("Content");
             break;
@@ -152,6 +162,7 @@ function externalScrape(type) {
 
     $("#process-type").val(type);
     $("#search").val("");
+    $("#size").val("");
     document.getElementById('csv-upload').style.display = 'none';
     document.getElementById('process-data').style.display = 'block';
     document.getElementById('search-keyword').style.display = 'block';
@@ -218,6 +229,10 @@ function doProcessScrape() {
     let processType = $("#process-type").val();
     let keywordType = $("#process option:selected").text();
     let keyword = $("#search").val();
+    let size = $("#size").val();
+    if (size === "" || size == null) {
+        size = "";
+    }
 
     if (keyword === "" || keyword == null) {
         showMsg('warning', "Peringatan", "Harap isi keyword", null);
@@ -228,19 +243,21 @@ function doProcessScrape() {
     request["module"] = processType;
     request["type"] = keywordType;
     request["search"] = keyword;
+    request["size"] = size;
 
     let tbl1 = $('#table1').DataTable({
         "destroy": true,
         "scrollX": true,
-        "responsive": false,
+        "responsive": true,
         "autoWidth": false,
         "paging": true,
         "searching": false
     });
+
     let tbl2 = $('#table2').DataTable({
         "destroy": true,
         "scrollX": true,
-        "responsive": false,
+        "responsive": true,
         "autoWidth": false,
         "paging": true,
         "searching": false
@@ -249,18 +266,24 @@ function doProcessScrape() {
     tbl1.clear().draw();
     tbl2.clear().draw();
 
-    let response = get("/api/scrape", "POST", request);
-    for (let obj of response.data) {
-        tbl1.row.add([obj]);
-        tbl2.row.add([obj]);
-    }
+    showLoading();
+    get("/api/scrape", "POST", request).then(response => {
+        for (let obj of response.data) {
+            tbl1.row.add([obj.user, obj.timestamp, obj.rating, obj.content]);
+            tbl2.row.add([obj.user, obj.timestamp, obj.rating, obj.content]);
+        }
 
-    tbl1.columns.adjust().draw();
-    tbl2.columns.adjust().draw();
+        tbl1.columns.adjust().draw();
+        tbl2.columns.adjust().draw();
 
-    setCookie("scrape-data", response.data);
-    setCookie("process-data", response.data);
-    document.getElementById('preprocess').style.display = 'block';
+        setCookie("scrape-data", response.data);
+        setCookie("process-data", response.data);
+        document.getElementById('preprocess').style.display = 'block';
+    }).catch(err => {
+        showMsg('error', "Terjadi Kesalahan", err);
+    }).finally(() => {
+        hideLoading();
+    });
 }
 
 function doDownload() {
@@ -272,7 +295,7 @@ function doDownload() {
         xhrFields: {
             responseType: 'blob'
         },
-        success: function(response) {
+        success: function (response) {
             let url = window.URL.createObjectURL(response);
             let a = document.createElement('a');
             a.href = url;
@@ -283,7 +306,7 @@ function doDownload() {
 
             showMsg('success', "Sukses", "Download berhasil!");
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             showMsg('error', "Error", "Download gagal: " + textStatus);
         }
     });

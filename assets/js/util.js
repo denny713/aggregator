@@ -15,41 +15,36 @@ function showMsg(type, title, message, callback) {
 }
 
 function get(url, type, request) {
-    let data = {};
-
-    $("#loading").modal("show");
-    $.ajax({
-        url: url,
-        type: type,
-        async: false,
-        dataType: 'json',
-        data: JSON.stringify(request),
-        contentType: 'application/json; charset=utf-8',
-        cache: false,
-        timeout: 600000,
-        beforeSend: function () {
-            $("#loading").modal("show");
-        }
-    }).done(function (response) {
-        $("#loading").modal("hide");
-        data = response;
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        $("#loading").modal("hide");
-        try {
-            let response = JSON.parse(jqXHR.responseText);
-            if (response.data && response.data.error) {
-                let errorMessage = response.data.error;
-                showMsg('error', "Error", errorMessage);
-            } else {
-                showMsg('error', "Error", textStatus + " : " + errorThrown);
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: url,
+            type: type,
+            async: true,
+            dataType: 'json',
+            data: JSON.stringify(request),
+            contentType: 'application/json; charset=utf-8',
+            cache: false,
+            timeout: 600000,
+            beforeSend: function () {
+                showLoading();
             }
-        } catch (e) {
-            showMsg('error', "Error", textStatus + " : " + errorThrown);
-        }
-        data = null;
+        }).done(function (response) {
+            resolve(response);
+        }).fail(function (jqXHR, textStatus, errThrown) {
+            try {
+                let response = JSON.parse(jqXHR.responseText);
+                if (response.data && response.data.error) {
+                    reject(response.data.error);
+                } else {
+                    reject(textStatus + " : " + errThrown);
+                }
+            } catch (e) {
+                reject(textStatus + " : " + errThrown);
+            }
+        }).always(function () {
+            hideLoading();
+        });
     });
-    $("#loading").modal("hide");
-    return data;
 }
 
 function getValueFromIndex(data, index) {
@@ -136,4 +131,12 @@ function setCookie(name, value) {
 
 function removeCookie(name) {
     document.cookie = name + '=;Max-Age=0;path=/';
+}
+
+function showLoading() {
+    $("#loading").modal("show");
+}
+
+function hideLoading() {
+    $("#loading").modal("hide");
 }

@@ -4,12 +4,13 @@ import requests
 from app_store_scraper import AppStore
 
 
-def scrape_app_store(app_name):
-    app_id = get_app_id(app_name)
-    app_ = AppStore(country='id', app_name=app_name, app_id=app_id)
+def scrape_app_store(country, app_name, size):
+    app_id = get_app_id(country, app_name)
+    app_ = AppStore(country=country, app_name=app_name, app_id=app_id)
+    max_size = int(size) if size else 200
 
     current_date = dt.date.today()
-    app_.review(how_many=20,
+    app_.review(how_many=max_size,
                 after=dt.datetime(current_date.year, current_date.month - 1, 1),
                 sleep=None)
 
@@ -22,11 +23,11 @@ def scrape_app_store(app_name):
     return results
 
 
-def get_app_id(app_name):
+def get_app_id(country, app_name):
     url = "https://itunes.apple.com/search"
     params = {
         'term': app_name,
-        'country': 'id',
+        'country': country,
         'media': 'software',
         'entity': 'software',
         'limit': 1
