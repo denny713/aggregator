@@ -14,18 +14,6 @@ body, html {
     background-color: #e6e6e6;
 }
 
-.sign-body body, .sign-body html {
-    height: 100%;
-    font-family: Poppins-Regular, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-image: url('/assets/img/background.png');
-    background-size: cover;
-    background-position: center;
-}
-
 @font-face {
     font-family: 'FontAwesome';
     src: url('/assets/fonts/font-awesome/fontawesome-webfont.woff2?v=4.7.0') format('woff2'),
