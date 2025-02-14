@@ -223,8 +223,7 @@ function doProcessUpload() {
 }
 
 function doProcessScrape() {
-    removeCookie("scrape-data");
-    removeCookie("process-data");
+    localStorage.removeItem('scrape-data');
 
     let processType = $("#process-type").val();
     let keywordType = $("#process option:selected").text();
@@ -239,51 +238,50 @@ function doProcessScrape() {
         return;
     }
 
-    let request = {};
-    request["module"] = processType;
-    request["type"] = keywordType;
-    request["search"] = keyword;
-    request["size"] = size;
-
-    let tbl1 = $('#table1').DataTable({
-        "destroy": true,
-        "scrollX": true,
-        "responsive": true,
-        "autoWidth": false,
-        "paging": true,
-        "searching": false
-    });
-
-    let tbl2 = $('#table2').DataTable({
-        "destroy": true,
-        "scrollX": true,
-        "responsive": true,
-        "autoWidth": false,
-        "paging": true,
-        "searching": false
-    });
-
-    tbl1.clear().draw();
-    tbl2.clear().draw();
-
     showLoading();
-    get("/api/scrape", "POST", request).then(response => {
-        for (let obj of response.data) {
-            tbl1.row.add([obj.user, obj.timestamp, obj.rating, obj.content]);
-            tbl2.row.add([obj.user, obj.timestamp, obj.rating, obj.content]);
-        }
+    $('#example').DataTable({
+        "destroy": true,
+        "serverSide": false,
+        "processing": false,
+        "responsive": true,
+        "ajax": {
+            "url": "/api/scrape",
+            "type": "POST",
+            "contentType": "application/json",
+            "data": function (d) {
+                return JSON.stringify({
+                    "draw": d.draw,
+                    "module": processType,
+                    "type": keywordType,
+                    "search": keyword,
+                    "page": Math.ceil(d.start / d.length),
+                    "size": size,
+                    "sort": "ASC"
+                });
+            },
+            "dataSrc": function (json) {
+                localStorage.setItem("scrape-data", JSON.stringify(json.data));
 
-        tbl1.columns.adjust().draw();
-        tbl2.columns.adjust().draw();
-
-        setCookie("scrape-data", response.data);
-        setCookie("process-data", response.data);
-        document.getElementById('preprocess').style.display = 'block';
-    }).catch(err => {
-        showMsg('error', "Terjadi Kesalahan", err);
-    }).finally(() => {
-        hideLoading();
+                hideLoading();
+                return json.data;
+            }
+        },
+        "columns": [
+            {"data": "user"},
+            {"data": "timestamp"},
+            {"data": "rating"},
+            {"data": "content"},
+            {"data": "content"}
+        ],
+        "pageLength": 10,
+        "paging": true,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false
     });
+
+    document.getElementById('preprocess').style.display = 'block';
 }
 
 function doDownload() {
@@ -481,22 +479,10 @@ function doPrepro() {
 
     let req = {};
     req["process"] = listProcess;
+}
 
-    let response = get("/api/preprocessing", "POST", req);
-    let tbl2 = $('#table2').DataTable({
-        "destroy": true,
-        "scrollX": true,
-        "responsive": false,
-        "autoWidth": false,
-        "paging": true,
-        "searching": false
-    });
-
-    tbl2.clear().draw();
-    for (let obj of response.data) {
-        tbl2.row.add([obj]);
-    }
-
-    setCookie("scrape-data", response.data);
-    tbl2.columns.adjust().draw();
+function cancelProcessing() {
+    localStorage.clear();
+    window.location.reload();
+    hideLoading();
 }
