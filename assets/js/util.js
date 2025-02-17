@@ -14,39 +14,6 @@ function showMsg(type, title, message, callback) {
     });
 }
 
-function get(url, type, request) {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: url,
-            type: type,
-            async: true,
-            dataType: 'json',
-            data: JSON.stringify(request),
-            contentType: 'application/json; charset=utf-8',
-            cache: false,
-            timeout: 600000,
-            beforeSend: function () {
-                showLoading();
-            }
-        }).done(function (response) {
-            resolve(response);
-        }).fail(function (jqXHR, textStatus, errThrown) {
-            try {
-                let response = JSON.parse(jqXHR.responseText);
-                if (response.data && response.data.error) {
-                    reject(response.data.error);
-                } else {
-                    reject(textStatus + " : " + errThrown);
-                }
-            } catch (e) {
-                reject(textStatus + " : " + errThrown);
-            }
-        }).always(function () {
-            hideLoading();
-        });
-    });
-}
-
 function getValueFromIndex(data, index) {
     if (index > 0 && index <= data.length) {
         return data[index - 1];
@@ -70,7 +37,7 @@ function appendOptions(select, data, param) {
 
 function readCsv() {
     return new Promise((resolve, reject) => {
-        let fileInput = document.getElementById('csv');
+        let fileInput = document.getElementById('file-upload');
         let file = fileInput.files[0];
 
         if (!file) {
@@ -82,7 +49,7 @@ function readCsv() {
 
         reader.onload = function (event) {
             let csvData = event.target.result;
-            resolve(processCsv(csvData));
+            resolve(processCsv(csvData, ";"));
         };
 
         reader.onerror = function (event) {
@@ -93,12 +60,27 @@ function readCsv() {
     });
 }
 
-function processCsv(csvData) {
+function readCsvFromFile(path, delimiter) {
+    return fetch(path)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Gagal membaca file CSV.");
+            }
+            return response.text();
+        })
+        .then(csvData => processCsv(csvData, delimiter))
+        .catch(error => {
+            console.error("Terjadi kesalahan:", error);
+            return [];
+        });
+}
+
+function processCsv(csvData, delimiter) {
     let rows = csvData.split("\n");
     let result = [];
 
     for (const element of rows) {
-        let row = element.split(";");
+        let row = element.split(delimiter);
         result.push(row);
     }
 

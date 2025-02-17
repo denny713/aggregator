@@ -248,22 +248,33 @@
                                 </fieldset>
                             </div>
                             <div class="col" id="csv-upload">
-                                <fieldset>
-                                    <legend>Upload File CSV</legend>
-                                    <div class="row" style="margin: auto;">
-                                        <div class="w-100"></div>
-                                        <div class="col-6">
-                                            <input type="file" id="csv" name="csv">
-                                        </div>
-                                        <div class="col-4">
-                                            <button class="btn btn-primary btn-sm text-center"
-                                                    onclick="doUpload();return false;">
-                                                <i class="fas fa-upload"></i>
-                                                Upload
-                                            </button>
+                                <form>
+                                    <div class="row form-group">
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="row form-group">
+                                                    <div class="upload-container" id="drop-area">
+                                                        <i class="icon fas fa-cloud-upload-alt"></i>
+                                                        <h4>Seret dan jatuhkan untuk unggah file</h4>
+                                                        <p>Atau</p>
+                                                        <label for="file-upload"
+                                                               class="btn btn-primary">Cari&nbsp;File</label>
+                                                        <input type="file" name="file-upload" id="file-upload"/>
+                                                        <p class="file-name" id="file-name"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="d-grid gap-2 d-md-flex justify-content-between">
+                                                <button class="btn btn-primary btn-sm btn-fix" type="button"
+                                                        onclick="doUpload();return false;">
+                                                    <i class="fas fa-upload"></i>
+                                                    Unggah
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </fieldset>
+                                </form>
                             </div>
                             <div class="col" id="process-data">
                                 <fieldset>
@@ -459,7 +470,7 @@
             <div class="modal-header modal-header-colour">
                 <h4>
                     <strong>
-                        Please wait...
+                        Mohon tunggu...
                     </strong>
                 </h4>
             </div>
@@ -497,6 +508,49 @@
         $('#loading').modal({
             backdrop: 'static',
             keyboard: false
+        });
+
+        let fileUpload = document.getElementById('file-upload');
+        let fileNameDisplay = document.getElementById('file-name');
+        let dropArea = document.getElementById('drop-area');
+
+        function validateFile(file) {
+            if (file) {
+                let fileName = file.name;
+                let fileExtension = fileName.split('.').pop().toLowerCase();
+
+                if (fileExtension === 'csv') {
+                    fileNameDisplay.textContent = `File yang diupload: ${fileName}`;
+                    fileNameDisplay.style.color = 'green';
+                } else {
+                    showMsg('warning', "Warning", "File harus berekstensi .csv", function () {
+                        fileUpload.value = '';
+                        fileNameDisplay.textContent = '';
+                    });
+                }
+            }
+        }
+
+        fileUpload.addEventListener('change', function (event) {
+            let file = event.target.files[0];
+            validateFile(file);
+        });
+
+        dropArea.addEventListener('dragover', function (event) {
+            event.preventDefault();
+            dropArea.classList.add('dragover');
+        });
+
+        dropArea.addEventListener('dragleave', function () {
+            dropArea.classList.remove('dragover');
+        });
+
+        dropArea.addEventListener('drop', function (event) {
+            event.preventDefault();
+            dropArea.classList.remove('dragover');
+
+            let file = event.dataTransfer.files[0];
+            validateFile(file);
         });
     });
 

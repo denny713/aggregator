@@ -1,5 +1,5 @@
 function doUpload() {
-    let fileInput = document.getElementById('csv');
+    let fileInput = document.getElementById('file-upload');
     let file = fileInput.files[0];
 
     if (!file) {
@@ -172,30 +172,10 @@ function externalScrape(type) {
 }
 
 function doProcessUpload() {
-    removeCookie("scrape-data");
-    removeCookie("process-data");
-
     let id = $('#process').val();
-    let tbl1 = $('#table1').DataTable({
-        "destroy": true,
-        "scrollX": true,
-        "responsive": false,
-        "autoWidth": false,
-        "paging": true,
-        "searching": false
-    });
-    let tbl2 = $('#table2').DataTable({
-        "destroy": true,
-        "scrollX": true,
-        "responsive": false,
-        "autoWidth": false,
-        "paging": true,
-        "searching": false
-    });
-
-    tbl1.clear().draw();
-    tbl2.clear().draw();
     let dataList = [];
+
+    showLoading();
     readCsv().then((data) => {
         for (let x = 0; x < data.length; x++) {
             if (x > 0) {
@@ -205,19 +185,41 @@ function doProcessUpload() {
                     return;
                 }
 
-                dataList.push(response);
-                tbl1.row.add([response]);
-                tbl2.row.add([response]);
+                let resData = {};
+                resData["user"] = "-";
+                resData["timestamp"] = "-";
+                resData["rating"] = "-";
+                resData["content"] = response;
+                dataList.push(resData);
             }
         }
 
-        tbl1.columns.adjust().draw();
-        tbl2.columns.adjust().draw();
+        localStorage.setItem('scrape-data', JSON.stringify(dataList));
+        $('#example').DataTable({
+            "destroy": true,
+            "serverSide": false,
+            "processing": false,
+            "responsive": true,
+            "data": dataList,
+            "columns": [
+                {"data": "user"},
+                {"data": "timestamp"},
+                {"data": "rating"},
+                {"data": "content"},
+                {"data": "content"}
+            ],
+            "pageLength": 10,
+            "paging": true,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false
+        });
 
-        setCookie("scrape-data", dataList);
-        setCookie("process-data", dataList);
         document.getElementById('preprocess').style.display = 'block';
+        hideLoading();
     }).catch((error) => {
+        hideLoading();
         showMsg('error', "Error", error, null);
     });
 }
@@ -308,177 +310,6 @@ function doDownload() {
             showMsg('error', "Error", "Download gagal: " + textStatus);
         }
     });
-}
-
-function doReset() {
-    document.getElementById("remove_username").checked = false;
-    document.getElementById("remove_rt").checked = false;
-    document.getElementById("remove_hashtag").checked = false;
-    document.getElementById("remove_url").checked = false;
-    document.getElementById("remove_punctuation").checked = false;
-    document.getElementById("remove_symbol").checked = false;
-    document.getElementById("remove_number").checked = false;
-    document.getElementById("remove_duplicate").checked = false;
-    document.getElementById("replace_slang").checked = false;
-    document.getElementById("replace_abbreviation").checked = false;
-    document.getElementById("replace_elochar").checked = false;
-    document.getElementById("lower_case").checked = false;
-    document.getElementById("remove_stopword").checked = false;
-    document.getElementById("stemming").checked = false;
-    document.getElementById("join_case").checked = false;
-    document.getElementById("tokenizing").checked = false;
-}
-
-function doPrepro() {
-    removeCookie("process-data");
-    let listProcess = [];
-
-    if (document.getElementById("remove_username").checked === true) {
-        listProcess.push(document.getElementById("remove_username").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_username").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_rt").checked === true) {
-        listProcess.push(document.getElementById("remove_rt").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_rt").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_hashtag").checked === true) {
-        listProcess.push(document.getElementById("remove_hashtag").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_hashtag").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_url").checked === true) {
-        listProcess.push(document.getElementById("remove_url").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_url").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_punctuation").checked === true) {
-        listProcess.push(document.getElementById("remove_punctuation").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_punctuation").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_symbol").checked === true) {
-        listProcess.push(document.getElementById("remove_symbol").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_symbol").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_number").checked === true) {
-        listProcess.push(document.getElementById("remove_number").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_number").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_duplicate").checked === true) {
-        listProcess.push(document.getElementById("remove_duplicate").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_duplicate").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("replace_slang").checked === true) {
-        listProcess.push(document.getElementById("replace_slang").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("replace_slang").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("replace_abbreviation").checked === true) {
-        listProcess.push(document.getElementById("replace_abbreviation").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("replace_abbreviation").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("replace_elochar").checked === true) {
-        listProcess.push(document.getElementById("replace_elochar").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("replace_elochar").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("lower_case").checked === true) {
-        listProcess.push(document.getElementById("lower_case").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("lower_case").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_stopword").checked === true) {
-        listProcess.push(document.getElementById("remove_stopword").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_stopword").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("stemming").checked === true) {
-        listProcess.push(document.getElementById("stemming").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("stemming").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("join_case").checked === true) {
-        listProcess.push(document.getElementById("join_case").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("join_case").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("tokenizing").checked === true) {
-        listProcess.push(document.getElementById("tokenizing").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("tokenizing").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    let req = {};
-    req["process"] = listProcess;
 }
 
 function cancelProcessing() {

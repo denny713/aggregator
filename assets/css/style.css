@@ -148,6 +148,36 @@ legend {
     color: #333333 !important;
 }
 
+.upload-container {
+    border: 2px dashed #008c9e;
+    border-radius: 10px;
+    background-color: #99d6ff;
+    color: #262626;
+    text-align: center;
+    padding: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.upload-container:hover {
+    background-color: #4db8ff;
+    border-color: #005f6b;
+}
+
+.upload-container input[type="file"] {
+    display: none;
+}
+
+.upload-container .icon {
+    font-size: 50px;
+}
+
+.file-name {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #333;
+}
+
 .navbar-head {
     --bs-bg-opacity: 1;
     background-color: #bfbfbf !important;
