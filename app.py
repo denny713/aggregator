@@ -69,11 +69,11 @@ def scrap():
         case "playstore-ind":
             data = scrape_play_store("id", search, size)
         case "appstore-ind":
-            data = scrape_app_store("id", search, size)
+            data = scrape_app_store("id", typ, search, size)
         case "playstore-int":
             data = scrape_play_store("us", search, size)
         case "appstore-int":
-            data = scrape_app_store("us", search, size)
+            data = scrape_app_store("us", typ, search, size)
 
         # Academic literature
         case "ieee":
