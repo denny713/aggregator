@@ -36,7 +36,8 @@ def scrape_ieee(type, keyword, size):
                 'user': author_list,
                 'timestamp': timestamp,
                 'rating': '',
-                'content': content
+                'content': content,
+                'preview': content
             })
 
     else:

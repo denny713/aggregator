@@ -32,7 +32,8 @@ def scrape_google_scholar(type, keyword, size):
             'user': authors,
             'timestamp': '',
             'rating': '',
-            'content': content
+            'content': content,
+            'preview': content
         })
 
     return results

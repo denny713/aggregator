@@ -34,7 +34,8 @@ def scrape_acm(type, keyword, size):
                 'user': authors,
                 'timestamp': formatted_date,
                 'rating': '',
-                'content': content
+                'content': content,
+                'preview': content
             })
 
             if len(results) == max_size:

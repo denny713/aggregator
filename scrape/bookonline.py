@@ -42,7 +42,8 @@ def scrape_book_online(type, keyword, size):
                 'user': author,
                 'timestamp': timestamp,
                 'rating': rating,
-                'content': content
+                'content': content,
+                'preview': content
             })
 
         # results = []
