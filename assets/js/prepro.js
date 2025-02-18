@@ -18,162 +18,46 @@ function doReset() {
 }
 
 function doPrepro() {
-    removeCookie("process-data");
-    let listProcess = [];
+    let listData = JSON.parse(localStorage.getItem("scrape-data"));
+    const operations = [
+        {id: "remove_username", func: removeUsername},
+        {id: "remove_rt", func: removeRetweet},
+        {id: "remove_hashtag", func: removeHashtag},
+        {id: "remove_url", func: removeUrl},
+        {id: "remove_punctuation", func: removePunctuation},
+        {id: "remove_symbol", func: removeSymbol},
+        {id: "remove_number", func: removeNumber},
+        {id: "remove_duplicate", func: removeDuplicate},
+        {id: "replace_slang", func: replaceSlang},
+        {id: "replace_abbreviation", func: replaceAbbreviation},
+        {id: "replace_elochar", func: replaceEloChar},
+        {id: "lower_case", func: lowerCase},
+        {id: "remove_stopword", func: removeStopword},
+        {id: "stemming", func: stemming},
+        {id: "join_case", func: joinCase},
+        {id: "tokenizing", func: tokenizing}
+    ];
 
-    if (document.getElementById("remove_username").checked === true) {
-        listProcess.push(document.getElementById("remove_username").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_username").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
+    for (let data of listData) {
+        let preview = data.preview;
+        for (let operation of operations) {
+            if (document.getElementById(operation.id).checked) {
+                preview = operation.func(preview);
+            }
         }
+
+        data["preview"] = preview;
     }
 
-    if (document.getElementById("remove_rt").checked === true) {
-        listProcess.push(document.getElementById("remove_rt").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_rt").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_hashtag").checked === true) {
-        listProcess.push(document.getElementById("remove_hashtag").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_hashtag").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_url").checked === true) {
-        listProcess.push(document.getElementById("remove_url").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_url").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_punctuation").checked === true) {
-        listProcess.push(document.getElementById("remove_punctuation").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_punctuation").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_symbol").checked === true) {
-        listProcess.push(document.getElementById("remove_symbol").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_symbol").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_number").checked === true) {
-        listProcess.push(document.getElementById("remove_number").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_number").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_duplicate").checked === true) {
-        listProcess.push(document.getElementById("remove_duplicate").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_duplicate").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("replace_slang").checked === true) {
-        listProcess.push(document.getElementById("replace_slang").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("replace_slang").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("replace_abbreviation").checked === true) {
-        listProcess.push(document.getElementById("replace_abbreviation").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("replace_abbreviation").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("replace_elochar").checked === true) {
-        listProcess.push(document.getElementById("replace_elochar").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("replace_elochar").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("lower_case").checked === true) {
-        listProcess.push(document.getElementById("lower_case").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("lower_case").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("remove_stopword").checked === true) {
-        listProcess.push(document.getElementById("remove_stopword").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("remove_stopword").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("stemming").checked === true) {
-        listProcess.push(document.getElementById("stemming").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("stemming").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("join_case").checked === true) {
-        listProcess.push(document.getElementById("join_case").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("join_case").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-    if (document.getElementById("tokenizing").checked === true) {
-        listProcess.push(document.getElementById("tokenizing").value);
-    } else {
-        let index = listProcess.indexOf(document.getElementById("tokenizing").value);
-        if (index !== -1) {
-            listProcess.splice(index, 1);
-        }
-    }
-
-
+    setDataToTable(listData);
 }
 
-function removeUserHandless(text) {
+function removeUsername(text) {
     return text.replace(/@\w+/g, '');
 }
 
 function removeRetweet(text) {
-    return text.replace(/@\w+/g, "");
+    return text.replace(/^RT\s+/, '');
 }
 
 function removeHashtag(text) {
@@ -196,20 +80,65 @@ function removeNumber(text) {
     return text.replace(/\d+/g, "");
 }
 
-function removeDuplicate(text) {
-
+function removeDuplicate(reqData) {
+    return reqData.filter((value, index, self) =>
+            index === self.findIndex((t) => (
+                t.user === value.user &&
+                t.timestamp === value.timestamp &&
+                t.rating === value.rating &&
+                t.content === value.content &&
+                t.preview === value.preview
+            ))
+    );
 }
 
 function replaceSlang(text) {
-
+    return readCsvFromFile('/assets/csv/slang_dataset.csv', ';')
+        .then(slangDict => {
+            let words = text.split(' ');
+            let replacedWords = words.map(word => slangDict[word] || word);
+            return replacedWords.join(' ');
+        });
 }
 
 function replaceAbbreviation(text) {
-
+    return readCsvFromFile('/assets/csv/abbre_dataset.csv', ' = ')
+        .then(slangDict => {
+            let words = text.split(' ');
+            let replacedWords = words.map(word => slangDict[word] || word);
+            return replacedWords.join(' ');
+        });
 }
 
 function replaceEloChar(text) {
+    return readCsvFromFile(csvPath, '\n')
+        .then(csvData => {
+            let elocharDict = processElocharCsv(csvData);
+            let words = text.split(' ');
+            let processedWords = [];
 
+            words.forEach(word => {
+                let lowerWord = word.toLowerCase();
+                let found = false;
+
+                for (let key in elocharDict) {
+                    if (key && lowerWord.includes(key)) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    processedWords.push(word);
+                } else {
+                    let pattern = /(\w)\1+/g;
+                    let replacedWord = word.replace(pattern, '$1');
+                    processedWords.push(replacedWord);
+                }
+            });
+
+            return processedWords.join(' ');
+        });
 }
 
 function lowerCase(text) {
@@ -217,17 +146,51 @@ function lowerCase(text) {
 }
 
 function removeStopword(text) {
+    const stopWords = new Set([
+        "dan", "atau", "adalah", "yang", "di", "ke", "dari", "untuk", "pada", "dengan",
+        "ini", "itu", "sebuah", "sebagai", "jika", "saya", "kamu", "dia", "mereka",
+        "kami", "kita", "itu", "sangat", "sudah", "belum", "akan", "tidak", "ya",
+        "tidak", "apa", "apa", "yang", "itu", "semua", "bisa", "boleh", "harus",
+        "seperti", "lebih", "dari", "sama", "saja", "satu", "dua", "tiga", "empat",
+        "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh"
+    ]);
 
+    if (Array.isArray(text)) {
+        return text.filter(word => !stopWords.has(word.toLowerCase()));
+    } else {
+        let words = text.split(' ');
+        let filteredWords = words.filter(word => !stopWords.has(word.toLowerCase()));
+        return filteredWords.join(' ');
+    }
 }
 
 function stemming(text) {
-
+    let stemmer = StemmerFactory.createStemmer();
+    return stemmer.stem(text);
 }
 
 function joinCase(text) {
-
+    if (Array.isArray(text)) {
+        text = text.join('');
+        text = [text];
+    } else {
+        text = text.replace(/ /g, '');
+    }
+    return text;
 }
 
 function tokenizing(text) {
-    return text.split(/\s+/);
+    let doc = nlp(text);
+    return doc.terms().out('array');
+}
+
+function processElocharCsv(csvData) {
+    const elocharList = csvData.split('\n').map(line => line.trim()).filter(line => line);
+    const elocharDict = {};
+
+    elocharList.forEach(word => {
+        elocharDict[word.toLowerCase()] = null;
+    });
+
+    return elocharDict;
 }

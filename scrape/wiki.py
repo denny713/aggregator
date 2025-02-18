@@ -60,7 +60,8 @@ def wiki_details(page_id, type):
         'user': username,
         'timestamp': timestamp,
         'rating': '',
-        'content': content
+        'content': content,
+        'preview': content
     }
 
 # import wikipedia

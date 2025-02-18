@@ -57,7 +57,8 @@ def scrape_science_direct(type, keyword, size):
             'user': authors,
             'timestamp': timestamp,
             'rating': '',
-            'content': content
+            'content': content,
+            'preview': content
         })
 
         if len(results) == max_size:

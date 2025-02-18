@@ -171,6 +171,38 @@ function externalScrape(type) {
     document.getElementById('btn-scrape').style.display = 'block';
 }
 
+function setDataToTable(dataList) {
+
+    dataList.forEach(item => {
+        item.user = item.user || "-";
+        item.timestamp = item.timestamp || "-";
+        item.rating = item.rating || "-";
+        item.content = item.content || "-";
+        item.preview = item.preview || "-";
+    });
+
+    $('#example').DataTable({
+        "destroy": true,
+        "serverSide": false,
+        "processing": false,
+        "responsive": false,
+        "data": dataList,
+        "columns": [
+            {"data": "user"},
+            {"data": "timestamp"},
+            {"data": "rating"},
+            {"data": "content"},
+            {"data": "preview"}
+        ],
+        "pageLength": 10,
+        "paging": true,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false
+    });
+}
+
 function doProcessUpload() {
     let id = $('#process').val();
     let dataList = [];
@@ -190,32 +222,13 @@ function doProcessUpload() {
                 resData["timestamp"] = "-";
                 resData["rating"] = "-";
                 resData["content"] = response;
+                resData["preview"] = response;
                 dataList.push(resData);
             }
         }
 
+        setDataToTable(dataList);
         localStorage.setItem('scrape-data', JSON.stringify(dataList));
-        $('#example').DataTable({
-            "destroy": true,
-            "serverSide": false,
-            "processing": false,
-            "responsive": true,
-            "data": dataList,
-            "columns": [
-                {"data": "user"},
-                {"data": "timestamp"},
-                {"data": "rating"},
-                {"data": "content"},
-                {"data": "content"}
-            ],
-            "pageLength": 10,
-            "paging": true,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
-        });
-
         document.getElementById('preprocess').style.display = 'block';
         hideLoading();
     }).catch((error) => {
@@ -273,7 +286,7 @@ function doProcessScrape() {
             {"data": "timestamp"},
             {"data": "rating"},
             {"data": "content"},
-            {"data": "content"}
+            {"data": "preview"}
         ],
         "pageLength": 10,
         "paging": true,
@@ -287,8 +300,6 @@ function doProcessScrape() {
 }
 
 function doDownload() {
-    // get("/api/download", "POST", null);
-
     $.ajax({
         url: '/api/download',
         type: 'POST',
