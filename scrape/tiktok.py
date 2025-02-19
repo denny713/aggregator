@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 import requests
 
@@ -40,11 +41,22 @@ def scrape_tiktok(url_req, size):
 
             comment = data['comments']
             for cm in comment:
-                com = cm['share_info']['desc']
+                print(json.dumps(cm, indent=4, ensure_ascii=False))
+                desc = cm['share_info']['desc']
+                title = cm["share_info"]["title"]
+                created_time = cm["create_time"]
 
-                if com == "":
-                    com = cm['text']
-                results.append(com)
+                user = desc.split("’s comment:")[0]
+                timestamp = datetime.utcfromtimestamp(created_time).strftime('%Y-%m-%d')
+                content = f"{title.strip()} - {desc.split('comment: ')[1]}"
+
+                results.append({
+                    'user': user,
+                    'timestamp': timestamp,
+                    'rating': '',
+                    'content': content,
+                    'preview': content
+                })
 
                 if len(results) == max_comment:
                     print('Sudah mencapai batas jumlah komentar')

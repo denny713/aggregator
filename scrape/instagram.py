@@ -14,7 +14,19 @@ def scrape_instagram(keyword, size):
     for media in medias:
         comments = client.media_comments(media.pk)
         for comment in comments:
-            results.append(comment.text)
+            user = comment.user.username
+            content = comment.text
+            timestamp = comment.created_at_utc
+            formatted_date = timestamp.strftime("%Y-%m-%d")
+            rating = comment.like_count
+
+            results.append({
+                'user': user,
+                'timestamp': formatted_date,
+                'rating': rating,
+                'content': content,
+                'preview': content
+            })
 
             if len(results) == max_size:
                 break
