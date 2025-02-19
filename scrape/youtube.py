@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from googleapiclient.discovery import build
 
 
@@ -22,13 +24,24 @@ def scrape_youtube(keyword, size):
                     part='snippet',
                     videoId=video_id,
                     textFormat='plainText',
-                    maxResults=100
+                    maxResults=max_size
                 ).execute()
 
                 for comment in comments['items']:
                     comment_snippet = comment['snippet']['topLevelComment']['snippet']
                     comment_text = comment_snippet['textDisplay']
-                    results.append(comment_text)
+                    comment_user = comment_snippet['authorDisplayName']
+                    timestamp = comment_snippet['publishedAt']
+                    dt_object = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+                    formatted_date = dt_object.strftime("%Y-%m-%d")
+
+                    results.append({
+                        'user': comment_user,
+                        'timestamp': formatted_date,
+                        'rating': '',
+                        'content': comment_text,
+                        'preview': comment_text
+                    })
 
                     if len(results) == max_size:
                         break

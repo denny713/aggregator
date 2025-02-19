@@ -25,7 +25,7 @@ from scrape.stackoverflow import scrape_stack_overflow
 from scrape.tiktok import scrape_tiktok
 from scrape.tokopedia import scrape_tokopedia
 from scrape.twitter import scrape_twitter
-from scrape.wiki import wiki_scrap, set_language
+from scrape.wiki import wiki_scrap
 from scrape.youtube import scrape_youtube
 
 app = Flask(__name__, static_folder='assets', template_folder='pages')
@@ -89,11 +89,9 @@ def scrap():
         case "sciencedirect":
             data = scrape_science_direct(typ, search, size)
         case "wikipedia-eng":
-            set_language('en')
-            data = wiki_scrap(typ, search, size)
+            data = wiki_scrap("en", typ, search, size)
         case "wikipedia-ind":
-            set_language('id')
-            data = wiki_scrap(typ, search, size)
+            data = wiki_scrap("id", typ, search, size)
 
         # Indonesia marketplace
         case "tokopedia":
