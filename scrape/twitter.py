@@ -13,58 +13,70 @@ def scrape_twitter(url_req, size):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--disable-notifications")
     browser = webdriver.Chrome(options=chrome_options)
-    browser.get("https://x.com/i/flow/login")
-
-    wait = WebDriverWait(browser, 20)
-    username = wait.until(EC.presence_of_element_located(
-        (By.XPATH,
-         "//*[@id='layers']/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[4]/label/div/div[2]/div/input")))
-    username.send_keys(eml)
-
-    next_button = wait.until(EC.element_to_be_clickable(
-        (By.XPATH,
-         "//*[@id='layers']/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/button[2]")))
-    next_button.click()
 
     try:
-        second_username = wait.until(EC.presence_of_element_located(
-            (By.XPATH,
-             "//*[@id='layers']/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div[2]/label/div/div[2]/div/input")))
-        second_username.send_keys(usr)
+        browser.get("https://x.com/i/flow/login")
+        wait = WebDriverWait(browser, 15)
 
-        next_button2 = wait.until(EC.element_to_be_clickable(
-            (By.XPATH,
-             "//*[@id='layers']/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div/div/button")))
-        next_button2.click()
-    except Exception as e:
-        print("Nama pengguna tidak diminta, langsung ke layar kata sandi...")
+        username_input = wait.until(EC.presence_of_element_located(
+            (By.CSS_SELECTOR, "input[name='text']")))
+        username_input.send_keys(eml)
+        browser.find_element(By.XPATH, "//span[text()='Next']").click()
+        time.sleep(2)
 
-    password = wait.until(EC.presence_of_element_located(
-        (By.XPATH,
-         "//*[@id='layers']/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div[3]/div/label/div/div[2]/div[1]/input")))
-    password.send_keys(pwd)
+        try:
+            username_input = WebDriverWait(browser, 5).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='text']"))
+            )
+            username_input.send_keys(usr)
+            browser.find_element(By.XPATH, "//span[text()='Next']").click()
+            time.sleep(2)
+        except Exception:
+            print("Username tidak diminta, langsung ke password")
 
-    login = wait.until(EC.element_to_be_clickable(
-        (By.XPATH,
-         "//*[@id='layers']/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/button")))
-    login.click()
-
-    time.sleep(5)
-    browser.get(url_req)
-    time.sleep(10)
-    results = []
-    max_size = int(size) if size else 300
-    try:
+        password_input = wait.until(EC.presence_of_element_located(
+            (By.CSS_SELECTOR, "input[name='password']")))
+        password_input.send_keys(pwd)
+        browser.find_element(By.XPATH, "//span[text()='Log in']").click()
         time.sleep(5)
-        comments = browser.find_elements(By.XPATH,
-                                         "//div[@class='css-146c3p1 r-8akbws r-krxsd3 r-dnmrzs r-1udh08x r-bcqeeo r-1ttztb7 r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-16dba41 r-bnwqim']")
-        for comment in comments:
-            results.append(comment.text)
 
-            if len(results) == max_size:
-                break
+        browser.get(url_req)
+        time.sleep(5)
+
+        results = []
+        max_size = int(size) if size else 300
+
+        while len(results) < max_size:
+            tweets = browser.find_elements(By.XPATH, "//article[@data-testid='tweet']")
+
+            for tweet in tweets:
+                try:
+                    username = tweet.find_element(By.XPATH, ".//div[@data-testid='User-Name']//span").text
+                    timestamp = tweet.find_element(By.XPATH, ".//time").get_attribute("datetime")
+                    comment = tweet.find_element(By.XPATH, ".//div[@data-testid='tweetText']").text
+
+                    results.append({
+                        'user': username,
+                        'timestamp': timestamp[:10],
+                        'rating': '',
+                        'content': comment,
+                        'preview': comment
+                    })
+
+                    if len(results) >= max_size:
+                        break
+
+                except Exception:
+                    continue
+
+            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(2)
+
+        return results[:max_size]
 
     except Exception as e:
-        print(f"Terjadi error: {e}")
+        print(f"Terjadi kesalahan: {e}")
+        return []
 
-    return results
+    finally:
+        browser.quit()
