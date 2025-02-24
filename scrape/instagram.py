@@ -10,7 +10,7 @@ def scrape_instagram(keyword, size):
     max_size = int(size) if size else 300
     results = []
 
-    medias = client.hashtag_medias_recent(keyword, 5)
+    medias = client.hashtag_medias_recent(keyword.replace(" ", ""), 5)
     for media in medias:
         comments = client.media_comments(media.pk)
         for comment in comments:
