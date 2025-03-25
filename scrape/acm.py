@@ -21,9 +21,9 @@ def scrape_acm(type, keyword, size):
             date_obj = datetime.strptime(date_str, '%B %Y')
             formatted_date = date_obj.strftime('%Y-%m-%d')
             if type == "title":
-                content = article.find('h5', class_='issue-item__title').text.strip()
+                content = article.find('h3', class_='issue-item__title').text.strip()
             else:
-                abstract = soup.find("h5", class_="issue-item__title")
+                abstract = soup.find("h3", class_="issue-item__title")
                 link = abstract.find('a', href=True)['href']
                 detail_uri = base_url + link
                 detail_response = requests.get(detail_uri)

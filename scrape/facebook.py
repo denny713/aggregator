@@ -17,7 +17,7 @@ def scrape_facebook(url_req, size):
     password = "Sukanlp123."
     browser.get(url)
 
-    wait = WebDriverWait(browser, 3600)
+    wait = WebDriverWait(browser, 30)
     email_field = wait.until(EC.visibility_of_element_located((By.NAME, 'email')))
     email_field.send_keys(username)
     pass_field = wait.until(EC.visibility_of_element_located((By.NAME, 'pass')))
@@ -27,17 +27,37 @@ def scrape_facebook(url_req, size):
     time.sleep(5)
     browser.get(url_req)
     time.sleep(10)
+
     results = []
     try:
         time.sleep(5)
-        comments = browser.find_elements(By.XPATH, "//div[@class='xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs']")
-        for comment in comments:
-            results.append(comment.text)
+        comments = browser.find_elements(By.XPATH,
+                                         "//div[contains(@class, 'xwib8y2') and contains(@class, 'xn6708d')]")
 
-            if max_size == len(results):
+        for comment in comments:
+            try:
+                user = comment.find_element(By.XPATH, ".//span[contains(@class, 'x3nfvp2')]").text
+            except:
+                user = "Unknown User"
+
+            try:
+                content = comment.find_element(By.XPATH, ".//div[contains(@class, 'xdj266r')]").text
+            except:
+                content = "No content"
+
+            results.append({
+                'user': user,
+                'timestamp': '',
+                'rating': '',
+                'content': content,
+                'preview': content
+            })
+
+            if len(results) >= max_size:
                 break
 
     except Exception as e:
         print(f"Terjadi error: {e}")
 
+    browser.quit()
     return results

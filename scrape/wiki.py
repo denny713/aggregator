@@ -1,39 +1,33 @@
+from datetime import datetime
 import requests
-import wikipedia
 
 
-def set_language(lang="en"):
-    global WIKI_API_URL
-    WIKI_API_URL = f"https://{lang}.wikipedia.org/w/api.php"
-
-
-def wiki_scrap(type, keyword, size):
-    set_language()
+def wiki_scrap(lang="en", type="title", keyword="", size=10):
+    wiki_api_url = f"https://{lang}.wikipedia.org/w/api.php"
     results = []
     max_size = int(size) if size else 300
-    jsdata = wiki_search(keyword, max_size)
+    jsdata = wiki_search(wiki_api_url, keyword, max_size)
 
     for page_id in jsdata:
-        results.append(wiki_details(page_id, type))
+        results.append(wiki_details(wiki_api_url, page_id, type))
 
     return results
 
 
-def wiki_search(keyword, rs):
-    # params = {
-    #     "action": "query",
-    #     "format": "json",
-    #     "list": "search",
-    #     "srsearch": keyword,
-    #     "srlimit": rs
-    # }
-    # response = requests.get(WIKI_API_URL, params=params)
-    # data = response.json()
-    # return {item['pageid']: {"title": item['title']} for item in data.get('query', {}).get('search', [])}
-    return wikipedia.search(keyword, results=rs)
+def wiki_search(api_url, keyword, rs):
+    params = {
+        "action": "query",
+        "format": "json",
+        "list": "search",
+        "srsearch": keyword,
+        "srlimit": rs
+    }
+    response = requests.get(api_url, params=params)
+    data = response.json()
+    return {item['pageid']: {"title": item['title']} for item in data.get('query', {}).get('search', [])}
 
 
-def wiki_details(page_id, type):
+def wiki_details(api_url, page_id, type):
     params = {
         "action": "query",
         "format": "json",
@@ -42,7 +36,7 @@ def wiki_details(page_id, type):
         "rvprop": "user|timestamp|comment",
         "inprop": "url"
     }
-    response = requests.get(WIKI_API_URL, params=params)
+    response = requests.get(api_url, params=params)
     data = response.json()
 
     page = data.get('query', {}).get('pages', {}).get(str(page_id), {})
@@ -51,44 +45,17 @@ def wiki_details(page_id, type):
     username = revisions.get('user', '')
     timestamp = revisions.get('timestamp', '')
 
-    if type == 'title':
-        content = page.get('title', '')
-    else:
-        content = revisions.get('comment', '')
+    formatted_date = ""
+    if timestamp:
+        dt_object = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+        formatted_date = dt_object.strftime("%Y-%m-%d")
+
+    content = page.get('title', '') if type == 'title' else revisions.get('comment', '')
 
     return {
         'user': username,
-        'timestamp': timestamp,
+        'timestamp': formatted_date,
         'rating': '',
         'content': content,
         'preview': content
     }
-
-# import wikipedia
-#
-#
-# def set_language(lang="en"):
-#     wikipedia.set_lang(lang)
-#
-#
-# def wiki_scrap(type, keyword, size):
-#     results = []
-#     max_size = int(size) if size else 300
-#     jsdata = wiki_search(keyword, max_size)
-#     for obj in range(len(jsdata)):
-#         if type == "title":
-#             item = jsdata[obj]
-#         else:
-#             item = wiki_sum(jsdata[obj])
-#
-#         results.append(item)
-#
-#     return results
-#
-#
-# def wiki_search(keyword, rs):
-#     return wikipedia.search(keyword, results=rs)
-#
-#
-# def wiki_sum(keyword):
-#     return wikipedia.summary(keyword, auto_suggest=False)

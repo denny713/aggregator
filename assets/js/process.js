@@ -119,9 +119,14 @@ function externalScrape(type) {
         case "instagram":
             options.push("Keyword");
             break;
-        case "playstore":
-        case "appstore":
-            options.push("App Name");
+        case "playstore-ind":
+        case "playstore-int":
+            options.push("App Review");
+            break;
+        case "appstore-ind":
+        case "appstore-int":
+            options.push("App Title");
+            options.push("App Review");
             break;
         case "wikipedia-ind":
         case "wikipedia-eng":

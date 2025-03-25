@@ -4,7 +4,7 @@ import requests
 from app_store_scraper import AppStore
 
 
-def scrape_app_store(country, app_name, size):
+def scrape_app_store(country, type, app_name, size):
     app_id = get_app_id(country, app_name)
     app_ = AppStore(country=country, app_name=app_name, app_id=app_id)
     max_size = int(size) if size else 200
@@ -17,8 +17,21 @@ def scrape_app_store(country, app_name, size):
     reviews = app_.reviews
     results = []
     for review in reviews:
-        rev = review['review']
-        results.append(rev)
+        date_response = review['date']
+        formatted_date = date_response.strftime("%Y-%m-%d")
+
+        if type == "app title":
+            content = review['title']
+        else:
+            content = review['review']
+
+        results.append({
+            'user': review['userName'],
+            'timestamp': formatted_date,
+            'rating': review['rating'],
+            'content': content,
+            'preview': content
+        })
 
     return results
 
