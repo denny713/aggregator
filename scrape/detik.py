@@ -1,6 +1,5 @@
 import re
 import urllib
-from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
@@ -51,7 +50,14 @@ def scrape_detik(type, keyword, size):
                     'content': content,
                     'preview': content
                 })
+
             else:
                 print("Header element tidak ditemukan")
+
+            if len(results) >= max_page:
+                break
+
+        if len(results) >= max_page:
+            break
 
     return results
