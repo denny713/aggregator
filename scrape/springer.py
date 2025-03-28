@@ -12,7 +12,7 @@ def scrape_springer(type, keyword, size):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     results = []
-    titles = soup.find_all("a", class_="title")
+    titles = soup.find_all("a", class_="app-card-open__link")
     for title in titles:
         link = global_url + title["href"]
         article = requests.get(link)

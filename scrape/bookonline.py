@@ -46,18 +46,12 @@ def scrape_book_online(type, keyword, size):
                 'preview': content
             })
 
-        # results = []
-        # if type == "title":
-        #     results = [book['best_book']['title'] for book in datas['work']]
-        # else:
-        #     book_ids = [book['best_book']['id']['#text'] for book in datas['work']]
-        #     for book_id in book_ids:
-        #         book_url = 'https://www.goodreads.com/book/show.xml?key={}&id={}'.format(api_key, book_id)
-        #         book_response = requests.request("GET", book_url, headers=header, data={})
-        #         book_dict = xmltodict.parse(book_response.text)
-        #         json_book = json.dumps(book_dict, indent=4, sort_keys=True)
-        #         book_json = json.loads(json_book)
-        #         book_desc = book_json['GoodreadsResponse']['book']['description']
-        #         results.append(book_desc)
+            if len(results) == max_page:
+                print('Sudah mencapai batas jumlah data')
+                break
+
+        if len(results) == max_page:
+            print('Sudah mencapai batas jumlah data')
+            break
 
     return results
