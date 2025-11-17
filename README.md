@@ -38,7 +38,7 @@ Aplikasi ini dapat mengumpulkan data dari 20+ sumber berbeda yang terbagi dalam 
 - **Detik** - Berita dan artikel Indonesia
 
 ### 2. Text Preprocessing
-Aplikasi menyediakan berbagai teknik preprocessing text yang komprehensif:
+Aplikasi menyediakan berbagai teknik preprocessing text yang komprehensif
 
 #### Pembersihan Data
 - **Remove Username** - Menghilangkan mention username (@user)
